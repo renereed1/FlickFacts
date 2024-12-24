@@ -1,8 +1,10 @@
 <?php
 
-namespace Clock;
+namespace FlickFacts\Common\ApplicationService\Clock;
 
-class Clock
+use DateTimeImmutable;
+
+interface Clock
 {
-
+    public function now(string $when = 'now'): DateTimeImmutable;
 }

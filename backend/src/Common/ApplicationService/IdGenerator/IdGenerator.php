@@ -1,6 +1,8 @@
 <?php
 
-class IdGenerator
-{
+namespace FlickFacts\Common\ApplicationService\IdGenerator;
 
+interface IdGenerator
+{
+    public function nextId(): string;
 }
