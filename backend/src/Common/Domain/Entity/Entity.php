@@ -2,13 +2,13 @@
 
 namespace FlickFacts\Common\Domain\Entity;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 
 abstract class Entity
 {
 
     public function __construct(protected string            $id,
-                                protected DateTimeImmutable $createdAt)
+                                protected DateTimeInterface $createdAt)
     {
 
     }

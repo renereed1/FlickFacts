@@ -2,12 +2,12 @@
 
 namespace FlickFacts\Common\Domain\Entity;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 
 abstract class AggregateRoot extends Entity
 {
     public function __construct(string            $id,
-                                DateTimeImmutable $createdAt,
+                                DateTimeInterface $createdAt,
                                 protected int     $version)
     {
         parent::__construct(id: $id,
