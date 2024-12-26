@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Theater\Interactor;
+namespace FlickFacts\Tests\Unit\Theater\Interactor;
 
 use DateTimeImmutable;
 use FlickFacts\Common\ApplicationService\Clock\Clock;
