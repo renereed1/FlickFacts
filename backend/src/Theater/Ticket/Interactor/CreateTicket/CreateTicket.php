@@ -21,6 +21,11 @@ class CreateTicket
 
     public function execute(CreateTicketRequest $request): void
     {
+        $ticket = $this->createTicket($request);
+    }
+    
+    public function createTicket(CreateTicketRequest $request): Ticket
+    {
         $id = $this->idGenerator->nextId();
         $createdAt = $this->clock->now();
 
@@ -28,9 +33,12 @@ class CreateTicket
             createdAt: $createdAt,
             theaterId: new TheaterId(id: $request->theaterId),
             movieId: new MovieId(id: $request->movieId),
+            price: $request->price,
             total: $request->total,
             available: $request->total);
 
         $this->ticketRepository->createTicket($ticket);
+
+        return $ticket;
     }
 }

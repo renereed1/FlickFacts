@@ -14,6 +14,7 @@ class Ticket extends AggregateRoot
                                 DateTimeImmutable        $createdAt,
                                 private TheaterId        $theaterId,
                                 private MovieId          $movieId,
+                                private float            $price,
                                 private int              $total,
                                 private int              $available)
     {

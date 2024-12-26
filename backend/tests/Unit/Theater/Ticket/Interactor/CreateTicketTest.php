@@ -43,6 +43,7 @@ class CreateTicketTest extends TestCase
             createdAt: new DateTimeImmutable('2001-12-15T03:13:32+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
+            price: 12.34,
             total: 20,
             available: 20);
 
@@ -69,6 +70,7 @@ class CreateTicketTest extends TestCase
     {
         $request = new CreateTicketRequest(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1',
+            price: 12.34,
             total: 20);
 
         $this->createTicket->execute($request);
