@@ -12,7 +12,7 @@
          failOnRisky="true"
          failOnWarning="true">
     <testsuites>
-        <testsuite name="default">
+        <testsuite name="FlickFacts">
             <directory>backend/tests</directory>
         </testsuite>
     </testsuites>

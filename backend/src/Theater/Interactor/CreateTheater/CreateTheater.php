@@ -5,9 +5,9 @@ namespace FlickFacts\Theater\Interactor\CreateTheater;
 use FlickFacts\Common\ApplicationService\Clock\Clock;
 use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
 use FlickFacts\Theater\Domain\Theater\Entity\Theater;
+use FlickFacts\Theater\Domain\Theater\TheaterRepository;
 use FlickFacts\Theater\Domain\Theater\ValueObject\Name;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
-use TheaterRepository;
 
 class CreateTheater
 {

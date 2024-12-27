@@ -4,9 +4,9 @@ namespace FlickFacts\Theater\Sales\Domain\Sales\Entity;
 
 use DateTimeImmutable;
 use FlickFacts\Common\Domain\Entity\AggregateRoot;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\MovieId;
+use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
+use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\TheaterId;
 
 class Sales extends AggregateRoot
 {

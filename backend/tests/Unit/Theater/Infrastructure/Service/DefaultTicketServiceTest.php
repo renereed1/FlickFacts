@@ -5,11 +5,11 @@ namespace FlickFacts\Tests\Unit\Theater\Infrastructure\Service;
 use DateTimeImmutable;
 use Exception;
 use FlickFacts\Theater\Application\Service\TicketService;
+use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
+use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Infrastructure\Service\DefaultTicketService;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
-use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\MovieId;
-use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TheaterId;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
@@ -37,7 +37,14 @@ class DefaultTicketServiceTest extends TestCase
 
         $this->ticketRepository = M::mock(TicketRepository::class);
         $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
-            ->with('THEATER_1', 'MOVIE_1')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
             ->andReturn($ticket)
             ->byDefault();
 
@@ -68,8 +75,8 @@ class DefaultTicketServiceTest extends TestCase
             }));
 
 
-        $this->ticketService->allocateTickets(theaterId: 'THEATER_1',
-            movieId: 'MOVIE_1',
+        $this->ticketService->allocateTickets(theaterId: new TheaterId(id: 'THEATER_1'),
+            movieId: new MovieId(id: 'MOVIE_1'),
             quantity: 1);
     }
 
@@ -86,7 +93,14 @@ class DefaultTicketServiceTest extends TestCase
             available: 19);
 
         $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
-            ->with('THEATER_1', 'MOVIE_1')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
             ->andReturn($purchased);
 
         $released = new Ticket(ticketId: new TicketId('TICKET_1'),
@@ -102,8 +116,8 @@ class DefaultTicketServiceTest extends TestCase
                 return $args == $released;
             }));
 
-        $this->ticketService->releaseTickets(theaterId: 'THEATER_1',
-            movieId: 'MOVIE_1',
+        $this->ticketService->releaseTickets(theaterId: new TheaterId('THEATER_1'),
+            movieId: new MovieId(id: 'MOVIE_1'),
             quantity: 1);
     }
 
@@ -125,11 +139,18 @@ class DefaultTicketServiceTest extends TestCase
             available: 0);
 
         $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
-            ->with('THEATER_1', 'MOVIE_1')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
             ->andReturn($purchased);
 
-        $this->ticketService->allocateTickets(theaterId: 'THEATER_1',
-            movieId: 'MOVIE_1',
+        $this->ticketService->allocateTickets(theaterId: new TheaterId(id: 'THEATER_1'),
+            movieId: new MovieId(id: 'MOVIE_1'),
             quantity: 1);
     }
 
@@ -151,11 +172,18 @@ class DefaultTicketServiceTest extends TestCase
             available: 20);
 
         $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
-            ->with('THEATER_1', 'MOVIE_1')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
             ->andReturn($purchased);
 
-        $this->ticketService->releaseTickets(theaterId: 'THEATER_1',
-            movieId: 'MOVIE_1',
+        $this->ticketService->releaseTickets(theaterId: new TheaterId(id: 'THEATER_1'),
+            movieId: new MovieId(id: 'MOVIE_1'),
             quantity: 1);
     }
 }

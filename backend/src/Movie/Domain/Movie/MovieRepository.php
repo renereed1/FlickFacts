@@ -6,6 +6,11 @@ use FlickFacts\Movie\Domain\Movie\Entity\Movie;
 
 interface MovieRepository
 {
-
-    public function createMovie(Movie $movie);
+    /**
+     * Persists a new Movie entity to the repository.
+     *
+     * @param Movie $movie The Movie entity to create.
+     * @return void
+     */
+    public function createMovie(Movie $movie): void;
 }

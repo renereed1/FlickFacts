@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use FlickFacts\Common\ApplicationService\Clock\Clock;
 use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
 use FlickFacts\Theater\Domain\Theater\Entity\Theater;
+use FlickFacts\Theater\Domain\Theater\TheaterRepository;
 use FlickFacts\Theater\Domain\Theater\ValueObject\Name;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheater;
@@ -14,7 +15,6 @@ use Mockery as M;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use TheaterRepository;
 
 class CreateTheaterTest extends TestCase
 {
@@ -61,6 +61,7 @@ class CreateTheaterTest extends TestCase
     public function CanCreateTheater(): void
     {
         $request = new CreateTheaterRequest(name: 'Theater 1');
+
         $this->createTheater->execute($request);
     }
 }

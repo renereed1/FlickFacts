@@ -9,10 +9,10 @@ use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
 use FlickFacts\Tests\Unit\Theater\Sales\Domain\Sales\SalesRepository;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
+use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
+use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\MovieId;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Interactor\SellTicket\SellTicket;
 use FlickFacts\Theater\Sales\Interactor\SellTicket\SellTicketRequest;
 use Mockery as M;
@@ -62,7 +62,16 @@ class SellTicketTest extends TestCase
 
         $this->ticketService = M::mock(TicketService::class);
         $this->ticketService->expects('allocateTickets')
-            ->with('THEATER_1', 'MOVIE_1', 1);
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                }),
+                1
+            );
+
 
         $this->pricingPolicy = M::mock(PricingPolicy::class);
         $this->pricingPolicy->expects('getPrice')
@@ -102,7 +111,16 @@ class SellTicketTest extends TestCase
             ->andThrows(new Exception());
 
         $this->ticketService->expects('releaseTickets')
-            ->with('THEATER_1', 'MOVIE_1', 1);
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                }),
+                1
+            );
+
 
         $request = new SellTicketRequest(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1',

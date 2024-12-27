@@ -8,10 +8,10 @@ use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
 use FlickFacts\Tests\Unit\Theater\Sales\Domain\Sales\SalesRepository;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
+use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
+use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\MovieId;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\TheaterId;
 
 class SellTicket
 {
@@ -61,8 +61,8 @@ class SellTicket
         $id = $this->idGenerator->nextId();
         $createdAt = $this->clock->now();
 
-        $this->ticketService->allocateTickets(theaterId: $theaterId,
-            movieId: $movieId,
+        $this->ticketService->allocateTickets(theaterId: new TheaterId(id: $theaterId),
+            movieId: new MovieId(id: $movieId),
             quantity: $quantity);
 
         $sale = new Sales(salesId: new SalesId($id),
@@ -89,8 +89,8 @@ class SellTicket
         try {
             $this->salesRepository->createSale($sales);
         } catch (Exception $e) {
-            $this->ticketService->releaseTickets(theaterId: $sales->theaterId->id,
-                movieId: $sales->movieId->id,
+            $this->ticketService->releaseTickets(theaterId: $sales->theaterId,
+                movieId: $sales->movieId,
                 quantity: $sales->quantity);
 
             throw $e;

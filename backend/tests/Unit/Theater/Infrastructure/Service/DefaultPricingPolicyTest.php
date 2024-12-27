@@ -3,11 +3,11 @@
 namespace FlickFacts\Tests\Unit\Theater\Infrastructure\Service;
 
 use DateTimeImmutable;
+use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
+use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Infrastructure\Service\DefaultPricingPolicy;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
-use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\MovieId;
-use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TheaterId;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\Test;
@@ -33,7 +33,14 @@ class DefaultPricingPolicyTest extends TestCase
 
         $this->ticketRepository = M::mock(TicketRepository::class);
         $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
-            ->with('THEATER_1', 'MOVIE_1')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
             ->andReturn($ticket)
             ->byDefault();
 
@@ -59,7 +66,14 @@ class DefaultPricingPolicyTest extends TestCase
     public function PriceNotFound(): void
     {
         $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
-            ->with('THEATER_1', 'MOVIE_1')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
             ->andReturnNull();
 
         $price = $this->pricingPolicy->getPrice(theaterId: 'THEATER_1',
