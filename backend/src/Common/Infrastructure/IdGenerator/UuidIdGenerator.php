@@ -2,7 +2,14 @@
 
 namespace FlickFacts\Common\Infrastructure\IdGenerator;
 
-class UuidIdGenerator
+use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
+use Ramsey\Uuid\Uuid;
+
+class UuidIdGenerator implements IdGenerator
 {
 
+    public function nextId(): string
+    {
+        return Uuid::uuid4()->toString();
+    }
 }

@@ -13,10 +13,20 @@ class Movie extends AggregateRoot
     public function __construct(public readonly MovieId $movieId,
                                 DateTimeInterface       $createdAt,
                                 private Title           $title,
-                                private Description     $description,)
+                                private Description     $description)
     {
         parent::__construct(id: $movieId->id,
             createdAt: $createdAt,
             version: 1);
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->movieId->id,
+            'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
+            'title' => $this->title->title,
+            'description' => $this->description->description,
+        ];
     }
 }

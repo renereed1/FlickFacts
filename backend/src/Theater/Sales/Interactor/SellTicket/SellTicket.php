@@ -5,12 +5,12 @@ namespace FlickFacts\Theater\Sales\Interactor\SellTicket;
 use Exception;
 use FlickFacts\Common\ApplicationService\Clock\Clock;
 use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
-use FlickFacts\Tests\Unit\Theater\Sales\Domain\Sales\SalesRepository;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
+use FlickFacts\Theater\Sales\Domain\Sales\SalesRepository;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
 
 class SellTicket

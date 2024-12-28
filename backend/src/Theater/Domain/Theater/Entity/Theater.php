@@ -17,4 +17,13 @@ class Theater extends AggregateRoot
             createdAt: $createdAt,
             version: 1);
     }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->theaterId->id,
+            'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
+            'name' => $this->name->name,
+        ];
+    }
 }

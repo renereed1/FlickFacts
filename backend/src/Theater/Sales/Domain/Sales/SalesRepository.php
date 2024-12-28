@@ -1,6 +1,6 @@
 <?php
 
-namespace FlickFacts\Tests\Unit\Theater\Sales\Domain\Sales;
+namespace FlickFacts\Theater\Sales\Domain\Sales;
 
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
 

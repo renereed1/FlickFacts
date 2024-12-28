@@ -1,19 +1,107 @@
-service: app
+org: presentmate
+app: flickfacts
+service: flickfacts
 
 provider:
-    name: aws
-    region: us-east-1
+  name: aws
+  region: us-west-2
+  stage: ${opt:stage, 'dev'}
+  architecture: arm64
+  logRetentionInDays: 7
+  httpApi:
+    cors: true
+  tracing:
+    lambda: true
+    apiGateway: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sts:GetSessionToken
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - dsql:*
+      Resource: "*"
+  environment:
+    DB_HOST: 'diabtwb373ndwq3yifgjlp5vry.dsql.us-east-2.on.aws'
+    DB_USERNAME: 'admin'
+    DB_PORT: '5432'
+    DB_DATABASE: 'postgres'
 
 plugins:
-    - ./vendor/bref/bref
+  - ./vendor/bref/bref
+  - serverless-lift
+  - serverless-iam-roles-per-function
 
 functions:
-    hello:
-        handler: index.php
-        description: ''
-        runtime: php-84
+  # Theater
+  CreateTheater:
+    handler: handler/Theater/CreateTheater.php
+    description: 'Create a new Theater'
+    runtime: php-84
+    memorySize: 1024
+    timeout: 6
+    events:
+      - httpApi:
+          path: /theaters
+          method: POST
+
+  CreateTicket:
+    handler: handler/Theater/CreateTicket.php
+    description: 'Create a new Ticket'
+    runtime: php-84
+    memorySize: 1024
+    timeout: 6
+    events:
+      - httpApi:
+          path: /theaters/{theaterId}/tickets
+          method: POST
+
+  SellTicket:
+    handler: handler/Theater/SellTicket.php
+    description: 'Sell a Ticket'
+    runtime: php-84
+    memorySize: 1024
+    timeout: 6
+    events:
+      - httpApi:
+          path: /theaters/{theaterId}/tickets-sell
+          method: POST
+
+  # Movie
+  CreateMovie:
+    handler: handler/Movie/CreateMovie.php
+    description: 'Create a new Movie'
+    runtime: php-84
+    memorySize: 1024
+    timeout: 6
+    events:
+      - httpApi:
+          path: /movies
+          method: POST
+
+  # Reporting
+  GetHighestSales:
+    handler: handler/Reporting/GetHighestSales.php
+    description: 'Get highest performing Theater per a given date'
+    runtime: php-84
+    memorySize: 1024
+    timeout: 6
+    events:
+      - httpApi:
+          path: /highest-sales
+          method: POST
+
 
 # Exclude files from deployment
 package:
-    patterns:
-        - '!tests/**'
+  patterns:
+    - '!node_modules/**'
+    - '!backend/tests/**'
+    - '!frontend/node_modules/**'
+    - '!frontend/**'
+
+constructs:
+  website:
+    type: single-page-app
+    path: frontend/dist

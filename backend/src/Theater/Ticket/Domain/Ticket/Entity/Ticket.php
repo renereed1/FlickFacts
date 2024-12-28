@@ -65,4 +65,22 @@ class Ticket extends AggregateRoot
 
         $this->available += $quantity;
     }
+
+    /**
+     * Serializes the ticket entity to an array.
+     *
+     * @return array Serialized representation of the ticket.
+     */
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->ticketId->id,
+            'theaterId' => $this->theaterId->id,
+            'movieId' => $this->movieId->id,
+            'price' => $this->price,
+            'total' => $this->total,
+            'available' => $this->available,
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+        ];
+    }
 }
