@@ -8,6 +8,7 @@ use Bref\Event\Http\HttpRequestEvent;
 use Bref\Event\Http\HttpResponse;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheater;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheaterRequest;
+use RuntimeException;
 
 class CreateTheaterHandler extends HttpHandler
 {
@@ -24,7 +25,14 @@ class CreateTheaterHandler extends HttpHandler
 
         $request = new CreateTheaterRequest(name: $name);
 
-        $this->createTheater->execute($request);
+        try {
+            $this->createTheater->execute($request);
+        } catch (RuntimeException $e) {
+            return new HttpResponse(json_encode([
+                'error' => $e->getMessage(),
+            ]), ['Content-type' => 'application/json'],
+                400);
+        }
 
         return new HttpResponse(json_encode([
             'message' => 'Theater has been created',

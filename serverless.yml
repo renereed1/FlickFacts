@@ -7,6 +7,9 @@ provider:
   region: us-west-2
   stage: ${opt:stage, 'dev'}
   architecture: arm64
+  runtime: php-84
+  memorySize: 1024
+  timeout: 6
   logRetentionInDays: 7
   httpApi:
     cors: true
@@ -38,31 +41,55 @@ functions:
   CreateTheater:
     handler: handler/Theater/CreateTheater.php
     description: 'Create a new Theater'
-    runtime: php-84
-    memorySize: 1024
-    timeout: 6
     events:
       - httpApi:
           path: /theaters
           method: POST
 
+  GetTheaters:
+    handler: handler/Theater/GetTheaters.php
+    description: 'Get Theaters'
+    events:
+      - httpApi:
+          path: /theaters
+          method: GET
+
+  GetTheater:
+    handler: handler/Theater/GetTheater.php
+    description: 'Get Theater'
+    events:
+      - httpApi:
+          path: /theaters/{theaterId}
+          method: GET
+
   CreateTicket:
     handler: handler/Theater/CreateTicket.php
     description: 'Create a new Ticket'
-    runtime: php-84
-    memorySize: 1024
-    timeout: 6
     events:
       - httpApi:
           path: /theaters/{theaterId}/tickets
           method: POST
 
+  GetTickets:
+    handler: handler/Theater/GetTickets.php
+    description: 'Get Tickets for the Theater'
+    events:
+      - httpApi:
+          path: /theaters/{theaterId}/tickets
+          method: GET
+
+  GetTheaterMovieSales:
+    handler: handler/Reporting/GetTheaterMovieSales.php
+    description: 'Get total movie sales and revenue for a specific theater'
+    events:
+      - httpApi:
+          path: /theaters/{theaterId}/movie-sales
+          method: GET
+
+
   SellTicket:
     handler: handler/Theater/SellTicket.php
     description: 'Sell a Ticket'
-    runtime: php-84
-    memorySize: 1024
-    timeout: 6
     events:
       - httpApi:
           path: /theaters/{theaterId}/tickets-sell
@@ -72,25 +99,43 @@ functions:
   CreateMovie:
     handler: handler/Movie/CreateMovie.php
     description: 'Create a new Movie'
-    runtime: php-84
-    memorySize: 1024
-    timeout: 6
     events:
       - httpApi:
           path: /movies
           method: POST
 
+  GetMovies:
+    handler: handler/Movie/GetMovies.php
+    description: 'Get Movies'
+    events:
+      - httpApi:
+          path: /movies
+          method: GET
+
+  GetMovie:
+    handler: handler/Movie/GetMovie.php
+    description: 'Get Movie'
+    events:
+      - httpApi:
+          path: /movies/{movieId}
+          method: GET
+
+  GetMovieTheaterSales:
+    handler: handler/Reporting/GetMovieTheaterSales.php
+    description: 'Get total theater sales and revenue for a specific movie'
+    events:
+      - httpApi:
+          path: /movies/{movieId}/theater-sales
+          method: GET
+
   # Reporting
   GetHighestSales:
     handler: handler/Reporting/GetHighestSales.php
     description: 'Get highest performing Theater per a given date'
-    runtime: php-84
-    memorySize: 1024
-    timeout: 6
     events:
       - httpApi:
           path: /highest-sales
-          method: POST
+          method: GET
 
 
 # Exclude files from deployment

@@ -8,20 +8,28 @@ use FlickFacts\Common\Infrastructure\IdGenerator\UuidIdGenerator;
 use FlickFacts\Common\Infrastructure\Persistence\Dsql\Connection;
 use FlickFacts\Movie\Domain\Movie\MovieRepository;
 use FlickFacts\Movie\Infrastructure\Persistence\PostgresMovieRepository;
+use FlickFacts\Movie\Infrastructure\ReadModel\PostgresMovieReadModel;
 use FlickFacts\Movie\Interactor\CreateMovie\CreateMovie;
+use FlickFacts\Movie\ReadModel\MovieReadModel;
+use FlickFacts\Reporting\Infrastructure\Persistence\ReadModel\PostgresSalesReadModel;
+use FlickFacts\Reporting\ReadModel\SalesReadModel;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\TheaterRepository;
+use FlickFacts\Theater\Infrastructure\Persistence\ReadModel\PostgresTheaterReadModel;
 use FlickFacts\Theater\Infrastructure\Persistence\Repository\PostgresTheaterRepository;
 use FlickFacts\Theater\Infrastructure\Service\DefaultPricingPolicy;
 use FlickFacts\Theater\Infrastructure\Service\DefaultTicketService;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheater;
+use FlickFacts\Theater\ReadModel\TheaterReadModel;
 use FlickFacts\Theater\Sales\Domain\Sales\SalesRepository;
 use FlickFacts\Theater\Sales\Infrastructure\Persistence\Repository\PostgresSalesRepository;
 use FlickFacts\Theater\Sales\Interactor\SellTicket\SellTicket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
+use FlickFacts\Theater\Ticket\Infrastructure\Persistence\ReadModel\PostgresTicketReadModel;
 use FlickFacts\Theater\Ticket\Infrastructure\Persistence\Repository\PostgresTicketRepository;
 use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicket;
+use FlickFacts\Theater\Ticket\ReadModel\TicketReadModel;
 use Psr\Container\ContainerInterface;
 
 return function (ContainerBuilder $container) {
@@ -94,6 +102,22 @@ return function (ContainerBuilder $container) {
                 salesRepository: $container->get(SalesRepository::class),
                 ticketService: $container->get(TicketService::class),
                 pricingPolicy: $container->get(PricingPolicy::class));
-        }
+        },
+
+        SalesReadModel::class => function (ContainerInterface $container) {
+            return new PostgresSalesReadModel(pdo: $container->get(Connection::class));
+        },
+
+        TicketReadModel::class => function (ContainerInterface $container) {
+            return new PostgresTicketReadModel(pdo: $container->get(Connection::class));
+        },
+
+        TheaterReadModel::class => function (ContainerInterface $container) {
+            return new PostgresTheaterReadModel(pdo: $container->get(Connection::class));
+        },
+
+        MovieReadModel::class => function (ContainerInterface $container) {
+            return new PostgresMovieReadModel(pdo: $container->get(Connection::class));
+        },
     ]);
 };

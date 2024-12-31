@@ -43,7 +43,7 @@ class GetHighestSalesHandlerTest extends TestCase
         $this->event = new HttpRequestEvent([
             'requestContext' => [
                 'http' => [
-                    'method' => 'POST',
+                    'method' => 'GET',
                 ]
             ],
             'queryStringParameters' => [

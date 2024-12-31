@@ -31,23 +31,24 @@ class Connection
         $currentTime = new DateTimeImmutable();
 
         // Check if the token is cached and still valid
-        if ($this->cachedToken === null ||
-            $this->tokenExpiry === null ||
-            $this->tokenExpiry <= $currentTime) {
-
-            $this->cachedToken = $this->generateDbConnectAdminAuthToken($host,
-                $region);
-            $this->tokenExpiry = $currentTime->modify($expire);
-        }
+//        if ($this->cachedToken === null ||
+//            $this->tokenExpiry === null ||
+//            $this->tokenExpiry <= $currentTime) {
+//
+//            $this->cachedToken = $this->generateDbConnectAdminAuthToken($host,
+//                $region);
+//            $this->tokenExpiry = $currentTime->modify($expire);
+//        }
 
         $dsn = sprintf("pgsql:host=%s;port=%d;dbname=%s",
-            $host,
+            'database-1.cp8m8s2iaja3.us-west-2.rds.amazonaws.com',
             $port,
-            $database);
+            'postgres');
 
         $pdo = new PDO($dsn,
-            $username,
-            $this->cachedToken);
+            'postgres',
+            //$this->cachedToken);
+            'mYl4Su030109');
 
         $pdo->setAttribute(PDO::ATTR_ERRMODE,
             PDO::ERRMODE_EXCEPTION);
@@ -58,6 +59,8 @@ class Connection
     private function generateDbConnectAdminAuthToken(string $endpoint,
                                                      string $region): string
     {
+        $startTime = microtime(true); // Start timing
+
         $action = 'DbConnectAdmin';
 
         try {
@@ -83,6 +86,12 @@ class Connection
                 new DateTimeImmutable('+15 minutes'));
 
             $signedUrl = (string)$signedRequest->getUri();
+
+            $endTime = microtime(true); // End timing
+
+            $executionTime = $endTime - $startTime; // Calculate execution time
+
+            print "Token generation took {$executionTime} seconds.\n";
 
             return parse_url($signedUrl, PHP_URL_HOST) . parse_url($signedUrl, PHP_URL_PATH) . '?' . parse_url($signedUrl, PHP_URL_QUERY);
         } catch (AwsException $e) {
