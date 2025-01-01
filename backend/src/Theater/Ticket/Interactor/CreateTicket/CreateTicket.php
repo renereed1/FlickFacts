@@ -30,7 +30,7 @@ class CreateTicket
      */
     public function execute(CreateTicketRequest $request): void
     {
-        if (!$this->ticketReadModel->isTicketAvailable(theaterId: $request->theaterId,
+        if ($this->ticketReadModel->isTicketAvailable(theaterId: $request->theaterId,
             movieId: $request->movieId)) {
 
             throw new RuntimeException('Ticket exists with availability.');

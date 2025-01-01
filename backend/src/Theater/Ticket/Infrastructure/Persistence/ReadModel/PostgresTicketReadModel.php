@@ -53,8 +53,6 @@ readonly class PostgresTicketReadModel implements TicketReadModel
 
         $statement->execute();
 
-        print 'Row Count: ' . $statement->rowCount() . PHP_EOL;
-
-        return $statement->rowCount() > 0;
+        return $statement->rowCount() >= 1;
     }
 }

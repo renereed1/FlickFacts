@@ -3,12 +3,19 @@
 import Layout from "@/layout/Layout.vue";
 import {onMounted, ref} from "vue";
 import axios from "axios";
+import MovieForm from "@/components/MovieForm.vue";
+import MovieList from "@/components/MovieList.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import TheaterSalesList from "@/components/TheaterSalesList.vue";
 
 const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
 
 const sales = ref([]);
 const showRightSide = ref(false);
 
+const loadingTheaterSales = ref(false);
+const loadingMovie = ref(false);
+const loadingMovies = ref(false);
 const loading = ref(false);
 
 const newMovie = ref({
@@ -22,17 +29,23 @@ const movies = ref([]);
 const fetchMovies = () => {
   const url = `${apiEndpoint}/movies`;
 
+  loadingMovies.value = true;
   axios.get(url)
       .then(response => {
         movies.value = response.data;
       })
+      .catch(error => {
+        console.log('Error: ', error.message);
+      })
+      .finally(() => {
+        loadingMovies.value = false;
+      });
 };
 
 const fetchMovie = (movieId) => {
   const url = `${apiEndpoint}/movies/${movieId}`;
 
-  console.log('URL: ', url);
-  loading.value = true
+  loadingMovie.value = true;
 
   axios.get(url)
       .then(response => {
@@ -42,9 +55,8 @@ const fetchMovie = (movieId) => {
         console.log('Error: ', error.message);
       })
       .finally(() => {
-        fetchMovies(movie.value.id);
         fetchSells(movie.value.id);
-        loading.value = false;
+        loadingMovie.value = false;
         showRightSide.value = true;
       });
 };
@@ -53,6 +65,8 @@ const fetchSells = () => {
 
   const url = `${apiEndpoint}/movies/${movie.value.id}/theater-sales`;
 
+  loadingTheaterSales.value = true;
+
   axios.get(url)
       .then(response => {
         sales.value = response.data;
@@ -60,27 +74,14 @@ const fetchSells = () => {
       .catch(error => {
         console.log('Error: ', error.message);
       })
-};
-
-const handleSubmit = () => {
-  const url = `${apiEndpoint}/movies`;
-
-  axios.post(url, newMovie.value)
-      .then(response => {
-        fetchMovies();
+      .finally(() => {
+        loadingTheaterSales.value = false;
       })
-      .catch(error => {
-        if (error.response) {
-          if (error.response.status === 400) {
-            alert(error.response.data.error);
-          } else {
-            console.error('Error:', error.response.status, error.response.data);
-          }
-        } else {
-          console.error('Error:', error.message);
-        }
-      });
 };
+
+const handleMovieCreated = () => {
+  fetchMovies();
+}
 
 onMounted(() => {
   fetchMovies();
@@ -92,45 +93,18 @@ onMounted(() => {
 
   <Layout>
     <div class="w-1/2 border p-2.5 space-y-5">
-      <div>
-        <form action="#" class="space-y-5" @submit.prevent="handleSubmit">
-          <div>
-            <input v-model="newMovie.title" class="border p-2.5 w-full rounded-md" placeholder="Enter new Movie title"
-                   type="text">
-          </div>
-          <div>
-            <textarea id="description" v-model="newMovie.description" class="border p-2.5 rounded-md w-full resize-none"
-                      cols="30"
-                      name="description"
-                      placeholder="Description"
-                      rows="3"></textarea>
-          </div>
 
-          <button class="border p-2.5 rounded-md w-full" type="submit">Create Movie</button>
-        </form>
-      </div>
+      <MovieForm @movieCreated="handleMovieCreated"/>
       <div class="space-y-5">
 
         <h3>Movies</h3>
         <hr>
 
-        <table>
-          <caption class="caption-bottom p-2.5">Flick Facts Franchise</caption>
-          <thead>
-          <tr>
-            <th>Movie</th>
-            <th class="px-5">Sold</th>
-            <th class="px-5">Total</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="movie in movies" :key="movie.id">
-            <th class="text-left underline cursor-pointer" @click="fetchMovie(movie.id)">{{ movie.title }}</th>
-            <td class="text-center">{{ parseInt(movie.quantity) }}</td>
-            <td class="text-center">${{ parseFloat(movie.total_revenue).toFixed(2) }}</td>
-          </tr>
-          </tbody>
-        </table>
+        <LoadingSpinner v-if="loadingMovies"/>
+        <MovieList
+            v-else
+            :movies="movies"
+            @fetchMovie="fetchMovie"/>
 
       </div>
 
@@ -143,26 +117,10 @@ onMounted(() => {
 
       <div class="flex flex-col gap-10 my-5">
 
-        <h3>Tickets Sold this Month</h3>
+        <h3>Tickets Sold</h3>
 
-        <table>
-          <thead>
-          <tr>
-            <th>Theater</th>
-            <th class="px-5">Price</th>
-            <th class="px-5">Sold</th>
-            <th>Total</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="sale in sales" :key="sale.id">
-            <th class="text-left">{{ sale.theater }}</th>
-            <td class="text-center">{{ parseFloat(sale.price).toFixed(2) }}</td>
-            <td class="text-center">{{ parseInt(sale.tickets_sold) }}</td>
-            <td class="text-center">${{ parseFloat(sale.total_revenue).toFixed(2) }}</td>
-          </tr>
-          </tbody>
-        </table>
+        <LoadingSpinner v-if="loadingTheaterSales"/>
+        <TheaterSalesList v-else :sales="sales"/>
 
       </div>
     </div>

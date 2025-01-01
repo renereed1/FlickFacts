@@ -70,7 +70,7 @@ const handleSubmit = () => {
 
       <div v-if="reporting.theater">
         <p>{{ reporting.theater }} had the highest sales on {{ reporting.date }} with a total of
-          ${{ reporting.revenue }}</p>
+          ${{ reporting.revenue }} in sales.</p>
       </div>
 
       <div v-if="error">
