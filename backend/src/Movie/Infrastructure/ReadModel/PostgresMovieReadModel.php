@@ -12,16 +12,16 @@ class PostgresMovieReadModel implements MovieReadModel
 
     }
 
-    public function getMovies(): array
+    public function findMovies(): array
     {
         $sql = '
                 SELECT
                     m.id,
                     m.title as title,
-                    SUM(quantity) AS quantity,
-                    SUM(price * quantity) AS total_revenue
-                FROM flickfacts.sale s
-                LEFT JOIN flickfacts.movie m ON s.movie_id = m.id
+                    COALESCE(SUM(s.quantity), 0) AS quantity,
+                    COALESCE(SUM(s.price * s.quantity), 0.0) AS total_revenue
+                FROM flickfacts.movies m
+                    LEFT JOIN flickfacts.sales s on s.movie_id = m.id
                 GROUP BY movie_id, m.title, m.id;
                 ';
 
@@ -34,7 +34,7 @@ class PostgresMovieReadModel implements MovieReadModel
 
     public function findMovie(string $movieId): array
     {
-        $sql = 'SELECT id, title, description from flickfacts.movie WHERE id = :movieId';
+        $sql = 'SELECT id, title, description from flickfacts.movies WHERE id = :movieId';
 
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':movieId', $movieId);

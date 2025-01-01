@@ -6,6 +6,7 @@ use Bref\Context\Context;
 use Bref\Event\Http\HttpHandler;
 use Bref\Event\Http\HttpRequestEvent;
 use Bref\Event\Http\HttpResponse;
+use Exception;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheater;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheaterRequest;
 use RuntimeException;
@@ -32,6 +33,10 @@ class CreateTheaterHandler extends HttpHandler
                 'error' => $e->getMessage(),
             ]), ['Content-type' => 'application/json'],
                 400);
+        } catch (Exception) {
+            return new HttpResponse(json_encode('Internal Server Error'),
+                ['Content-type' => 'text/plain'],
+                500);
         }
 
         return new HttpResponse(json_encode([

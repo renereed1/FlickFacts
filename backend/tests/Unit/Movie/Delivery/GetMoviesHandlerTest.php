@@ -25,7 +25,7 @@ class GetMoviesHandlerTest extends TestCase
         parent::setUp();
 
         $this->movieReadModel = m::mock(MovieReadModel::class);
-        $this->movieReadModel->expects('getMovies')
+        $this->movieReadModel->expects('findMovies')
             ->andReturn([
                 [
                     'id' => 'MOVIE_1',

@@ -8,8 +8,8 @@ readonly class Name
 {
     public function __construct(public string $name)
     {
-        if (strlen($this->name) < 2 || strlen($this->name) > 20) {
-            throw new RuntimeException('Name must be between 2 and 20 characters long');
+        if (strlen($this->name) < 2 || strlen($this->name) > 60) {
+            throw new RuntimeException('Name must be between 2 and 60 characters long');
         }
 
         if (!preg_match('/^[a-zA-Z0-9\s\-\_\.]+$/', $this->name)) {

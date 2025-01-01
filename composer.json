@@ -27,6 +27,7 @@
     "aws/aws-sdk-php": "^3.336",
     "ext-pdo": "*",
     "ramsey/uuid": "^4.7",
-    "php-di/php-di": "^7.0"
+    "php-di/php-di": "^7.0",
+    "ext-http": "*"
   }
 }

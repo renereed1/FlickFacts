@@ -34,7 +34,9 @@ class CreateMovieHandler extends HttpHandler
                 'error' => $e->getMessage()
             ]), ['Content-type' => 'application/json'],
                 400);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            print 'Exception: ' . $e->getMessage() . "\n";
+            
             return new HttpResponse('Internal Server Error',
                 ['Content-type' => 'text/plain'],
                 500);

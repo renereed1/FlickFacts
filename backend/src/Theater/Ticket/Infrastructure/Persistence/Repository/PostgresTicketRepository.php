@@ -3,6 +3,7 @@
 namespace FlickFacts\Theater\Ticket\Infrastructure\Persistence\Repository;
 
 use DateTimeImmutable;
+use Exception;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
@@ -19,49 +20,72 @@ class PostgresTicketRepository implements TicketRepository
 
     public function createTicket(Ticket $ticket): void
     {
-        $sql = "INSERT INTO flickfacts.ticket (id, created_at, theater_id, movie_id, price, total, available) 
+        $sql = "INSERT INTO flickfacts.tickets (id, created_at, theater_id, movie_id, price, total, available) 
                   VALUES (:id, :created_at, :theater_id, :movie_id, :price, :total, :available)";
 
         $statement = $this->pdo->prepare($sql);
 
         $data = $ticket->serialize();
 
-        $statement->execute([
-            'id' => $data['id'],
-            'created_at' => $data['createdAt'],
-            'theater_id' => $data['theaterId'],
-            'movie_id' => $data['movieId'],
-            'price' => $data['price'],
-            'total' => $data['total'],
-            'available' => $data['available']
-        ]);
+        try {
+            $statement->execute([
+                'id' => $data['id'],
+                'created_at' => $data['createdAt'],
+                'theater_id' => $data['theaterId'],
+                'movie_id' => $data['movieId'],
+                'price' => $data['price'],
+                'total' => $data['total'],
+                'available' => $data['available']
+            ]);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     public function save(Ticket $ticket): void
     {
-        $sql = "UPDATE flickfacts.ticket 
+        $sql = "UPDATE flickfacts.tickets 
                   SET available = :available 
                   WHERE id = :id";
         $statement = $this->pdo->prepare($sql);
 
         $data = $ticket->serialize();
 
-        $statement->execute([
-            'id' => $data['id'],
-            'available' => $data['available'],
-        ]);
+        try {
+            $statement->execute([
+                'id' => $data['id'],
+                'available' => $data['available'],
+            ]);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     public function findTicketByTheaterIdAndMovieId(TheaterId $theaterId,
                                                     MovieId   $movieId): ?Ticket
     {
-        $sql = "SELECT * FROM flickfacts.ticket WHERE theater_id = :theaterId AND movie_id = :movieId LIMIT 1";
+        // $sql = "SELECT * FROM flickfacts.tickets WHERE theater_id = :theaterId AND movie_id = :movieId LIMIT 1";
+        $sql = '
+                SELECT *
+                FROM flickfacts.tickets
+                WHERE theater_id = :theaterId
+                  AND movie_id = :movieId
+                  AND (
+                      -- Case 1: If there is only one ticket, allow it even if available = 0
+                      (SELECT COUNT(*) FROM flickfacts.tickets WHERE theater_id = :theaterId AND movie_id = :movieId) = 1
+                      -- Case 2: If there is more than one ticket, only select the one with available > 0
+                      OR available > 0)
+                LIMIT 1;';
         $statement = $this->pdo->prepare($sql);
 
-        $statement->execute([
-            'theaterId' => $theaterId->id,
-            'movieId' => $movieId->id,
-        ]);
+        try {
+            $statement->execute([
+                'theaterId' => $theaterId->id,
+                'movieId' => $movieId->id,
+            ]);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
 
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 

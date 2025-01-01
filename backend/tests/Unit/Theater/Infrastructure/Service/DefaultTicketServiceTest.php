@@ -15,6 +15,7 @@ use Mockery as M;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class DefaultTicketServiceTest extends TestCase
 {
@@ -185,5 +186,38 @@ class DefaultTicketServiceTest extends TestCase
         $this->ticketService->releaseTickets(theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
             quantity: 1);
+    }
+
+    #[Test]
+    public function AllocateTicketsThrowsExceptionWhenQuantityIsNegative(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Quantity must be positive and greater then 0.');
+
+        $this->ticketRepository->expects('save')
+            ->never();
+
+        $purchased = new Ticket(ticketId: new TicketId('TICKET_1'),
+            createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
+            theaterId: new TheaterId(id: 'THEATER_1'),
+            movieId: new MovieId(id: 'MOVIE_1'),
+            price: 14.42,
+            total: 20,
+            available: 0);
+
+        $this->ticketRepository->expects('findTicketByTheaterIdAndMovieId')
+            ->with(
+                M::on(function ($theaterId) {
+                    return $theaterId instanceof TheaterId && $theaterId->id === 'THEATER_1';
+                }),
+                M::on(function ($movieId) {
+                    return $movieId instanceof MovieId && $movieId->id === 'MOVIE_1';
+                })
+            )
+            ->andReturn($purchased);
+
+        $this->ticketService->allocateTickets(theaterId: new TheaterId(id: 'THEATER_1'),
+            movieId: new MovieId(id: 'MOVIE_1'),
+            quantity: -1);
     }
 }

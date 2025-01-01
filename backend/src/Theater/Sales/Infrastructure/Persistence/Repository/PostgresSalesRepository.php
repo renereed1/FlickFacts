@@ -15,7 +15,7 @@ readonly class PostgresSalesRepository implements SalesRepository
 
     public function createSale(Sales $sales): void
     {
-        $sql = "INSERT INTO flickfacts.sale (id, theater_id, movie_id, price, quantity, created_at)
+        $sql = "INSERT INTO flickfacts.sales (id, theater_id, movie_id, price, quantity, created_at)
             VALUES (:id, :theater_id, :movie_id, :price, :quantity, :created_at)";
         $statement = $this->pdo->prepare($sql);
 

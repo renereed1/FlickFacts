@@ -93,7 +93,8 @@ return function (ContainerBuilder $container) {
         CreateTicket::class => function (ContainerInterface $container) {
             return new CreateTicket(idGenerator: $container->get(IdGenerator::class),
                 clock: $container->get(SystemClock::class),
-                ticketRepository: $container->get(TicketRepository::class));
+                ticketRepository: $container->get(TicketRepository::class),
+                ticketReadModel: $container->get(TicketReadModel::class));
         },
 
         SellTicket::class => function (ContainerInterface $container) {

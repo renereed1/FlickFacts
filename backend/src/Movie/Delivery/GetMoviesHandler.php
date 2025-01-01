@@ -18,7 +18,7 @@ class GetMoviesHandler extends HttpHandler
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {
-        $response = $this->movieReadModel->getMovies();
+        $response = $this->movieReadModel->findMovies();
 
         return new HttpResponse(json_encode($response),
             ['Content-Type' => 'application/json'],

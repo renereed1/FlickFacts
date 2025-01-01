@@ -9,12 +9,15 @@ use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
+use FlickFacts\Theater\Ticket\ReadModel\TicketReadModel;
+use RuntimeException;
 
 class CreateTicket
 {
     public function __construct(private readonly IdGenerator      $idGenerator,
                                 private readonly Clock            $clock,
-                                private readonly TicketRepository $ticketRepository)
+                                private readonly TicketRepository $ticketRepository,
+                                private readonly TicketReadModel  $ticketReadModel)
     {
 
     }
@@ -27,6 +30,12 @@ class CreateTicket
      */
     public function execute(CreateTicketRequest $request): void
     {
+        if (!$this->ticketReadModel->isTicketAvailable(theaterId: $request->theaterId,
+            movieId: $request->movieId)) {
+
+            throw new RuntimeException('Ticket exists with availability.');
+        }
+
         $ticket = $this->createTicket(theaterId: $request->theaterId,
             movieId: $request->movieId,
             price: $request->price,

@@ -46,8 +46,8 @@ const fetchTheaters = () => {
       });
 };
 
-const fetchTickets = (theaterId) => {
-  const url = `${apiEndpoint}/theaters/${theaterId}/tickets`;
+const fetchTickets = () => {
+  const url = `${apiEndpoint}/theaters/${theater.value.id}/tickets`;
 
   axios.get(url)
       .then(response => {
@@ -93,7 +93,7 @@ const fetchTheater = (theaterId) => {
         console.log('Error: ', error.message);
       })
       .finally(() => {
-        fetchTickets(theater.value.id);
+        fetchTickets();
         fetchSells(theater.value.id);
         loading.value = false;
         showRightSide.value = true;
@@ -119,10 +119,18 @@ const handleAddTicket = (theaterId) => {
 
   axios.post(url, newTicket.value)
       .then(response => {
-        addTicket();
+        fetchTickets();
       })
       .catch(error => {
-        console.log('Error: ', error.message);
+        if (error.response) {
+          if (error.response.status === 400) {
+            alert(error.response.data.error);
+          } else {
+            console.error('Error:', error.response.status, error.response.data);
+          }
+        } else {
+          console.error('Error:', error.message);
+        }
       });
 }
 
@@ -132,7 +140,8 @@ const handleSellTicket = () => {
 
   axios.post(url, newSale.value)
       .then(response => {
-        fetchTheaters()
+        fetchTheaters();
+        fetchTickets();
         fetchSells();
       })
       .catch(error => {
@@ -150,8 +159,6 @@ const handleSellTicket = () => {
 
 const addTicket = () => {
   module.value = 'add-ticket'
-
-
 }
 
 const fetchSells = () => {

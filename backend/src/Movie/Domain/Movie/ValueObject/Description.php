@@ -8,8 +8,8 @@ readonly class Description
 {
     public function __construct(public string $description)
     {
-        if (strlen($this->description) > 60) {
-            throw new RuntimeException('Description must be less than 60 characters long');
+        if (strlen($this->description) > 120) {
+            throw new RuntimeException('Description must be less than 120 characters long');
         }
     }
 }

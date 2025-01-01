@@ -15,7 +15,7 @@ readonly class PostgresTheaterRepository implements TheaterRepository
 
     public function createTheater(Theater $theater): void
     {
-        $sql = "INSERT INTO flickfacts.theater (id, created_at, name) VALUES (:id, :created_at, :name)";
+        $sql = "INSERT INTO flickfacts.theaters (id, created_at, name) VALUES (:id, :created_at, :name)";
         $statement = $this->pdo->prepare($sql);
 
         $data = $theater->serialize();

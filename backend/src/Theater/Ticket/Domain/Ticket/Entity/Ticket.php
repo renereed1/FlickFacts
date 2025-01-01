@@ -40,10 +40,14 @@ class Ticket extends AggregateRoot
      *
      * @param int $quantity The number of tickets to allocate.
      *
-     * @throws Exception If there are not enough tickets available to allocate.
+     * @throws RuntimeException If there are not enough tickets available to allocate.
      */
     public function allocateTickets(int $quantity): void
     {
+        if ($quantity < 1) {
+            throw new RuntimeException('Quantity must be positive and greater then 0.');
+        }
+
         if ($this->available < $quantity) {
             throw new RuntimeException('Insufficient tickets available to allocate.');
         }

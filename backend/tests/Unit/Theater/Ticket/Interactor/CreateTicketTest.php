@@ -12,10 +12,12 @@ use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
 use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicket;
 use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicketRequest;
+use FlickFacts\Theater\Ticket\ReadModel\TicketReadModel;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class CreateTicketTest extends TestCase
 {
@@ -27,17 +29,21 @@ class CreateTicketTest extends TestCase
 
     private TicketRepository $ticketRepository;
 
+    private TicketReadModel $ticketReadModel;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->idGenerator = M::mock(IdGenerator::class);
         $this->idGenerator->expects('nextId')
-            ->andReturn('TICKET_1');
+            ->andReturn('TICKET_1')
+            ->byDefault();
 
         $this->clock = M::mock(Clock::class);
         $this->clock->expects('now')
-            ->andReturn(new DateTimeImmutable('2001-12-15T03:13:32+00:00'));
+            ->andReturn(new DateTimeImmutable('2001-12-15T03:13:32+00:00'))
+            ->byDefault();
 
         $ticket = new Ticket(ticketId: new TicketId('TICKET_1'),
             createdAt: new DateTimeImmutable('2001-12-15T03:13:32+00:00'),
@@ -51,11 +57,18 @@ class CreateTicketTest extends TestCase
         $this->ticketRepository->expects('createTicket')
             ->with(M::on(function ($args) use ($ticket) {
                 return $args == $ticket;
-            }));
+            }))
+            ->byDefault();
+
+        $this->ticketReadModel = M::mock(TicketReadModel::class);
+        $this->ticketReadModel->expects('isTicketAvailable')
+            ->andReturnFalse()
+            ->byDefault();
 
         $this->createTicket = new CreateTicket(idGenerator: $this->idGenerator,
             clock: $this->clock,
-            ticketRepository: $this->ticketRepository);
+            ticketRepository: $this->ticketRepository,
+            ticketReadModel: $this->ticketReadModel);
     }
 
     public function tearDown(): void
@@ -68,6 +81,31 @@ class CreateTicketTest extends TestCase
     #[DoesNotPerformAssertions]
     public function CreateTicket(): void
     {
+        $request = new CreateTicketRequest(theaterId: 'THEATER_1',
+            movieId: 'MOVIE_1',
+            price: 12.34,
+            total: 20);
+
+        $this->createTicket->execute($request);
+    }
+
+    #[Test]
+    public function AttemptCreateTicketWhenExistingTicketHasAvailability(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->ticketReadModel->expects('isTicketAvailable')
+            ->andReturnTrue();
+
+        $this->idGenerator->expects('nextId')
+            ->never();
+
+        $this->clock->expects('now')
+            ->never();
+
+        $this->ticketRepository->expects('createTicket')
+            ->never();
+
         $request = new CreateTicketRequest(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1',
             price: 12.34,

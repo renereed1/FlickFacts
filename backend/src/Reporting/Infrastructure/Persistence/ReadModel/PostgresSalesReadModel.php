@@ -23,9 +23,9 @@ class PostgresSalesReadModel implements SalesReadModel
                 t.name AS theater_name,
                 SUM(s.price * s.quantity) AS total_sales
             FROM
-                flickfacts.sale s
+                flickfacts.sales s
             JOIN
-                flickfacts.theater t ON s.theater_id = t.id
+                flickfacts.theaters t ON s.theater_id = t.id
             WHERE
                 s.created_at::date = :date
             GROUP BY
@@ -54,8 +54,8 @@ class PostgresSalesReadModel implements SalesReadModel
                     s.price AS price,
                     SUM(s.quantity) AS tickets_sold,
                     SUM(s.price * s.quantity) AS total_revenue
-                FROM flickfacts.sale s
-                LEFT JOIN flickfacts.movie m
+                FROM flickfacts.sales s
+                LEFT JOIN flickfacts.movies m
                    ON s.movie_id = m.id
                 WHERE s.theater_id = :theaterId
                 GROUP BY s.movie_id, m.title, s.price;';
@@ -76,9 +76,9 @@ class PostgresSalesReadModel implements SalesReadModel
                        s.price AS price,
                        SUM(s.quantity) AS tickets_sold,
                        SUM(s.price * s.quantity) AS total_revenue
-                FROM flickfacts.sale s
-                    LEFT JOIN flickfacts.theater t ON t.id = s.theater_id
-                    LEFT JOIN flickfacts.movie m ON m.id = s.movie_id
+                FROM flickfacts.sales s
+                    LEFT JOIN flickfacts.theaters t ON t.id = s.theater_id
+                    LEFT JOIN flickfacts.movies m ON m.id = s.movie_id
                 WHERE m.id = :movieId
                 GROUP BY t.name, m.title, s.price;';
 

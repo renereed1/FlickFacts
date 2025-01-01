@@ -25,10 +25,10 @@ class NameTest extends TestCase
     }
 
     #[Test]
-    public function ThrowExceptionWhenNameIsMoreThen20Character(): void
+    public function ThrowExceptionWhenNameIsMoreThen60Character(): void
     {
         $this->expectException(RuntimeException::class);
-        new Name(name: 'N2345678910123456789N');
+        new Name(name: 'N2345678910123456789NN2345678910123456789NN234567891012345678');
     }
 
     #[Test]

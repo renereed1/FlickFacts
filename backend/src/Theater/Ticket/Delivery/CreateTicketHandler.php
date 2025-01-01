@@ -6,8 +6,10 @@ use Bref\Context\Context;
 use Bref\Event\Http\HttpHandler;
 use Bref\Event\Http\HttpRequestEvent;
 use Bref\Event\Http\HttpResponse;
+use Exception;
 use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicket;
 use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicketRequest;
+use RuntimeException;
 
 class CreateTicketHandler extends HttpHandler
 {
@@ -32,7 +34,20 @@ class CreateTicketHandler extends HttpHandler
             price: $price,
             total: $total);
 
-        $this->createTicket->execute($request);
+        try {
+            $this->createTicket->execute($request);
+        } catch (RuntimeException $e) {
+            return new HttpResponse(json_encode([
+                'error' => $e->getMessage(),
+            ]), ['Content-type' => 'application/json'],
+                400);
+        } catch (Exception $e) {
+            print 'Exception: ' . $e->getMessage() . "\n";
+
+            return new HttpResponse('Internal Server Error',
+                ['Content-Type' => 'text/plain'],
+                500);
+        }
 
         return new HttpResponse(json_encode([
             'message' => 'Ticket created',

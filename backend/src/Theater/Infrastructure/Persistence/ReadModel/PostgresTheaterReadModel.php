@@ -20,8 +20,8 @@ class PostgresTheaterReadModel implements TheaterReadModel
                t.name AS name,
                SUM(s.price * s.quantity) AS revenue,
                NULL AS total_revenue
-        FROM flickfacts.theater t
-        LEFT JOIN flickfacts.sale s ON t.id = s.theater_id
+        FROM flickfacts.theaters t
+        LEFT JOIN flickfacts.sales s ON t.id = s.theater_id
         GROUP BY t.name, t.id
 
         UNION ALL
@@ -31,7 +31,7 @@ class PostgresTheaterReadModel implements TheaterReadModel
                'Total' AS name,
                SUM(s.price * s.quantity) AS revenue,
                SUM(s.price * s.quantity) AS total_revenue
-        FROM flickfacts.sale s;
+        FROM flickfacts.sales s;
         ";
 
         $statement = $this->pdo->prepare($sql);
@@ -43,7 +43,7 @@ class PostgresTheaterReadModel implements TheaterReadModel
 
     public function findTheater(string $theaterId): array
     {
-        $sql = 'SELECT id, name FROM flickfacts.theater WHERE id = :theaterId';
+        $sql = 'SELECT id, name FROM flickfacts.theaters WHERE id = :theaterId';
 
         $statement = $this->pdo->prepare($sql);
 
