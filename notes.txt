@@ -1,0 +1,63 @@
+Create Theaters:
+
+INSERT INTO theaters (id, name, created_at)
+VALUES
+  ('b8a7bc74-8d6a-4bcd-87f5-b47cf4b98e56', 'Flick Facts - Fontana', '2024-12-01 10:00:00+00'),
+  ('45cfb104-e5d4-4d13-9139-0134a320e9b7', 'Flick Facts - Santa Monica', '2024-12-05 14:30:00+00'),
+  ('e0f5b13b-47ca-4b4b-b09b-f1fa1b0896b1', 'Flick Facts - Beverly Hills', '2024-12-07 09:15:00+00'),
+  ('c8c3e1bc-2cb6-4774-8d99-87baf0e0ec7f', 'Flick Facts - Los Angeles', '2024-12-10 17:45:00+00'),
+  ('1f97f9b5-b882-4bfc-b02d-c91409879590', 'Flick Facts - San Francisco', '2024-12-11 12:00:00+00'),
+  ('3e0f29d2-9e7d-4b56-9c22-5d9733a82ea2', 'Flick Facts - Sacramento', '2024-12-13 13:30:00+00'),
+  ('fe3a848b-56ac-4f3e-bf7a-f8f1b1a1575f', 'Flick Facts - San Diego', '2024-12-15 16:00:00+00'),
+  ('6f2b748f-e944-4c9d-9e35-f96ec0de5894', 'Flick Facts - Long Beach', '2024-12-17 11:30:00+00'),
+  ('f207e682-2ec7-4f31-a222-6d2703786f2c', 'Flick Facts - Riverside', '2024-12-19 08:45:00+00'),
+  ('c9f607b9-c5d0-41ea-bb3d-b0d081476ba6', 'Flick Facts - Anaheim', '2024-12-20 14:20:00+00'),
+  ('399c6817-e539-4930-a78a-775b4c88a03a', 'Flick Facts - Bakersfield', '2024-12-22 10:30:00+00'),
+  ('86cf4537-f3db-47d7-a3f7-c2a3458d4099', 'Flick Facts - Fresno', '2024-12-24 13:00:00+00'),
+  ('7dfe10c9-24a1-4ccf-b88c-79d592c08071', 'Flick Facts - Irvine', '2024-12-26 15:45:00+00'),
+  ('2a28d7d1-1bc7-4c5b-9a7d-72bb8d5314bb', 'Flick Facts - Santa Clara', '2024-12-28 09:00:00+00'),
+  ('d75590d9-bc62-44b6-bdf2-309d4c54b961', 'Flick Facts - Oakland', '2024-12-30 11:15:00+00');
+
+
+
+Create Movies:
+
+INSERT INTO movies (id, title, description, created_at)
+VALUES
+  ('1c9e77d0-e1ad-4bfb-a846-6e1b0843b073', 'The Lost City', 'A romantic adventure film about a reclusive author and her book cover model.', '2024-12-01 10:00:00+00'),
+  ('2e4410a6-b37c-4c5d-bdfd-7fd204a0f64a', 'Sky Warriors', 'Follows the lives of elite pilots in a futuristic air force.', '2024-12-02 13:30:00+00'),
+  ('ff09a660-3c99-4e9f-8764-99a6d3f8f78a', 'The Midnight Heist', 'A group of thieves attempt a risky heist under the cover of night.', '2024-12-03 08:45:00+00'),
+  ('3b82d674-4eaf-4601-b7cf-cfb5d6c132b7', 'Frostbitten', 'A chilling survival story set in the Arctic wilderness.', '2024-12-04 14:00:00+00'),
+  ('fed17c35-c25f-413a-b7e3-e505f25b8773', 'Sunset Boulevard', 'A washed-up screenwriter stumbles upon a long-lost love.', '2024-12-05 15:45:00+00'),
+  ('7632bfb9-18e1-48de-b8da-d0a4fe60f101', 'End of Days', 'In a dystopian future, a group of rebels fight for survival.', '2024-12-06 16:30:00+00'),
+  ('f0a6e3b7-8fa0-46fe-b67f-bd7d7d2a76a9', 'Shadows of the Past', 'A detective investigates the murder of a wealthy businessman.', '2024-12-07 17:00:00+00'),
+  ('548b2ff2-2449-4d60-b090-cb99923b52cd', 'The Silent Echo', 'A story of a mute girl’s escape from an abusive household.', '2024-12-08 09:00:00+00'),
+  ('8a663ed5-7077-4c72-988d-bcfcf62f476f', 'City of Gold', 'A treasure hunter embarks on a quest for a legendary treasure.', '2024-12-09 18:15:00+00'),
+  ('12b77e8b-46d1-4a8f-b033-5365ed2e2959', 'Starlight Journey', 'A young astronaut makes an unexpected discovery in deep space.', '2024-12-10 07:30:00+00'),
+  ('e84c1849-d3c9-4a79-9057-e9cd35b6b0d1', 'Waves of Time', 'A story that spans multiple generations and a family secret.', '2024-12-11 10:45:00+00'),
+  ('4c4d3bb1-264b-4d55-a3ad-9da578346a34', 'Nightfall', 'A terrifying tale of survival in the wilderness under the dark of night.', '2024-12-12 12:00:00+00'),
+  ('eb4d38ab-20f0-474a-90c3-02ac52925c94', 'Into the Abyss', 'A team of divers descend into the depths of a mysterious ocean trench.', '2024-12-13 14:10:00+00'),
+  ('21a6ab73-bfa0-4320-98ff-38761aab0c94', 'Love and War', 'Set against the backdrop of World War II, two soldiers fall in love.', '2024-12-14 19:30:00+00'),
+  ('689174e5-34e0-4695-b02e-723ab70aee2c', 'Ghosts of the Past', 'The restless spirits of a forgotten village seek redemption.', '2024-12-15 16:25:00+00'),
+  ('48e5a8ab-5874-4f94-bc65-4d1f5c263227', 'The Vanishing Point', 'A journalist uncovers a mystery surrounding the disappearance of a prominent politician.', '2024-12-16 11:15:00+00'),
+  ('c8b43198-1e8d-4e0c-b3b9-70fd8b772ef5', 'Through the Storm', 'A story about a family torn apart by a sudden natural disaster.', '2024-12-17 13:10:00+00'),
+  ('b7d9ef7d-0e7c-45c3-b5ba-52098ff69a94', 'Winter’s End', 'In a post-apocalyptic world, a group of survivors fight for resources.', '2024-12-18 08:50:00+00'),
+  ('c2c2b0f2-1e09-4e9c-9f87-e456cbfe3456', 'Echoes of Eternity', 'A scientist discovers a way to communicate with the past.', '2024-12-19 18:00:00+00'),
+  ('fd4c8242-3cf3-4138-89c9-fd4db2097f75', 'Breaking Point', 'A woman must confront her troubled past after an unexpected tragedy.', '2024-12-20 09:30:00+00'),
+  ('c76acfa9-7139-4139-987b-dbf3852a1a13', 'Chasing Dreams', 'A young athlete struggles to overcome obstacles and find success.', '2024-12-21 07:00:00+00'),
+  ('9ea3f8ea-dc8f-42f7-b373-d4fae9151d8a', 'The Edge of Reality', 'A surrealist drama that explores the boundaries between dreams and reality.', '2024-12-22 14:30:00+00'),
+  ('3657fdf3-7c12-4a42-bab2-eaa70b51992a', 'Unspoken Truths', 'A journalist’s investigation into a politician’s corruption spirals out of control.', '2024-12-23 13:20:00+00'),
+  ('e38d6234-c017-4f45-8b7d-837b1d548ca2', 'The Hidden Path', 'A lone hiker follows a mysterious trail in the wilderness and uncovers dark secrets.', '2024-12-24 10:00:00+00'),
+  ('d034f8b3-0203-4e6c-8e55-64b76c7f9e0f', 'Far Beyond the Stars', 'In the future, humanity faces its most dangerous space mission yet.', '2024-12-25 15:50:00+00'),
+  ('a3b535b7-bfd2-4965-9ee4-08f14c8e1843', 'Whispers in the Dark', 'A haunting tale of a detective investigating paranormal activities in a small town.', '2024-12-26 11:45:00+00'),
+  ('c3ef2741-57c9-4f3d-b1c4-f6e646243c9b', 'Beyond the Horizon', 'A group of explorers set out to uncover the mysteries of a hidden civilization.', '2024-12-27 12:10:00+00'),
+  ('df1f6e51-124e-4e62-b3ca-570684c7f2b7', 'Survival of the Fittest', 'A reality show that tests the limits of human endurance in the wild.', '2024-12-28 08:30:00+00'),
+  ('d16e5e55-c622-41ab-9a42-e05732b6a8b4', 'In the Shadow of Death', 'A war drama about soldiers fighting for survival in an unforgiving terrain.', '2024-12-29 16:40:00+00'),
+  ('34a0cfb5-f1e4-456a-9d5f-697e736f15fa', 'Rise of the Phoenix', 'A mythical hero embarks on a quest to save the world from an ancient curse.', '2024-12-30 17:00:00+00'),
+  ('05c4336d-5f4c-413d-9514-27fc350550ef', 'Heart of Stone', 'A heartwarming story about a family overcoming personal tragedies.', '2024-12-01 09:15:00+00'),
+  ('7a91f61d-4182-4743-b7fe-8bc9b078f4fc', 'On the Edge', 'A thriller about a criminal mastermind who is one step ahead of the authorities.', '2024-12-02 10:10:00+00'),
+  ('ffb32829-cf19-48ca-b734-d8884bc9b273', 'End of the Line', 'A psychological thriller about a man trapped in a dangerous game.', '2024-12-03 19:20:00+00'),
+  ('90a8b907-e50a-47a3-b122-7e967d1ac4bc', 'Blackout', 'A city-wide blackout leads to chaos and unthinkable events.', '2024-12-04 20:30:00+00'),
+  ('788d8d35-88f0-44b7-9b3d-685730f5f720', 'The Black Queen', 'A medieval fantasy story of betrayal, revenge, and power.', '2024-12-05 12:50:00+00'),
+  ('f26811bb-7b34-4b6a-bb13-050da2a9826b', 'The Silver Lining', 'A coming-of-age drama about a teenager discovering her true potential.', '2024-12-06 17:00:00+00');
+

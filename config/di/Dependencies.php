@@ -32,6 +32,15 @@ use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicket;
 use FlickFacts\Theater\Ticket\ReadModel\TicketReadModel;
 use Psr\Container\ContainerInterface;
 
+require_once __DIR__ . '/../EnvLoader.php';
+
+try {
+    loadEnv(__DIR__ . '/../../.env');
+} catch (Exception $e) {
+    print 'Failed to load environment file: ' . $e->getMessage() . "\n";
+    exit(1);
+}
+
 return function (ContainerBuilder $container) {
 
     $container->addDefinitions([

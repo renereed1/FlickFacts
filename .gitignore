@@ -4,3 +4,4 @@
 .phpunit.cache
 .serverless
 node_modules
+.env
