@@ -46,10 +46,6 @@ class Connection
             $port,
             $database);
 
-        print 'DSN: ' . $dsn . "\n";
-        print 'Username: ' . $username . "\n";
-        print 'Password: ' . $password . "\n";
-
         $pdo = new PDO($dsn,
             $username,
             //$this->cachedToken);
