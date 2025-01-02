@@ -5,22 +5,45 @@ const props = defineProps({
 </script>
 
 <template>
-  <table>
-    <thead>
-    <tr>
-      <th>Movie</th>
-      <th>Price</th>
-      <th>Sold</th>
-      <th>Total</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="sale in sales" :key="sale.id">
-      <th class="text-left">{{ sale.movie }}</th>
-      <td class="text-center">{{ sale.price }}</td>
-      <td class="text-center">{{ parseInt(sale.tickets_sold) }}</td>
-      <td class="text-center">${{ parseFloat(sale.total_revenue).toFixed(2) }}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="flex-grow flex flex-col">
+    <div class="grid grid-cols-4">
+      <div class="p-2.5 font-bold">Movie</div>
+      <div class="p-2.5 text-center font-bold">Price</div>
+      <div class="p-2.5 text-center font-bold">Sold</div>
+      <div class="p-2.5 text-center font-bold">Total</div>
+    </div>
+
+    <!-- Body with scrollable content -->
+    <div class="flex-grow flex overflow-auto">
+      <!-- Grid container for the body -->
+      <div class="flex-grow">
+        <!-- Loop over the tickets -->
+        <div v-for="sale in sales" :key="sale.id" class="grid grid-cols-4 row">
+          <div class="text-left">
+            {{ sale.movie }}
+          </div>
+          <div class="text-center">
+            ${{ sale.price ? parseFloat(sale.price).toFixed(2) : '0.00' }}
+          </div>
+          <div class="text-center">
+            {{ sale.tickets_sold ? parseInt(sale.tickets_sold) : '0' }}
+          </div>
+          <div class="text-center">
+            ${{ sale.total_revenue ? parseFloat(sale.total_revenue).toFixed(2) : '0' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+/* Alternating row colors */
+.row:nth-child(even) {
+  background-color: #f0f0f0; /* Light gray */
+}
+
+.row:nth-child(odd) {
+  background-color: #ffffff; /* White */
+}
+</style>

@@ -37,13 +37,12 @@ return function (ContainerBuilder $container) {
     $container->addDefinitions([
 
         Connection::class => function (ContainerInterface $container) {
-            $connection = new Connection('', '');
-            return $connection->getConnection(
-                getenv('DB_HOST') ?: '',
-                getenv('DB_USERNAME') ?: '',
-                getenv('DB_DATABASE') ?: '',
-                getenv('DB_PORT') ?: '',
-                'us-east-2');
+            $connection = new Connection();
+            return $connection->getConnection(host: getenv('DB_HOST'),
+                username: getenv('DB_USERNAME'),
+                password: getenv('DB_PASSWORD'),
+                database: getenv('DB_DATABASE'),
+                port: getenv('DB_PORT'));
         },
 
         TheaterRepository::class => function (ContainerInterface $container) {

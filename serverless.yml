@@ -26,10 +26,11 @@ provider:
         - dsql:*
       Resource: "*"
   environment:
-    DB_HOST: 'diabtwb373ndwq3yifgjlp5vry.dsql.us-east-2.on.aws'
-    DB_USERNAME: 'admin'
-    DB_PORT: '5432'
-    DB_DATABASE: 'postgres'
+    DB_HOST: 'diabtwb373ndwq3yifgjlp5vry.dsql.us-east-2.on.aws' # Should be taken from Env Variable
+    DB_USERNAME: 'admin' # Should be taken from Env Variable
+    DB_PASSWORD: 'Password1234!*' # Should be taken from Env Variable
+    DB_PORT: '5432' # Should be taken from Env Variable
+    DB_DATABASE: 'postgres' # Should be taken from Env Variable
 
 plugins:
   - ./vendor/bref/bref

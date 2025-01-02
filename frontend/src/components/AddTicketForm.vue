@@ -70,7 +70,7 @@ const handleSubmit = () => {
     </div>
 
     <div>
-      <input id="price" v-model="newTicket.price" class="border p-2.5 rounded-md w-full" min="0"
+      <input id="price" v-model="newTicket.price" class="border p-2.5 rounded-md w-full" min="1"
              name="price"
              placeholder="Price"
              step="0.01"
@@ -79,8 +79,9 @@ const handleSubmit = () => {
 
     <div>
       <input id="totalAvailable" v-model="newTicket.total" class="border p-2.5 rounded-md w-full"
-             name="totalAvailable"
-             placeholder="Total Available" type="number">
+             min="1"
+             name="totalAvailable" placeholder="Total Available"
+             type="number">
     </div>
 
     <button class="border p-2.5 rounded-md w-full flex items-center justify-center gap-2.5" type="submit">Add Ticket to

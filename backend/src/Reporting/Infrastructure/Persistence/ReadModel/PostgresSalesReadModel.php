@@ -58,7 +58,8 @@ class PostgresSalesReadModel implements SalesReadModel
                 LEFT JOIN flickfacts.movies m
                    ON s.movie_id = m.id
                 WHERE s.theater_id = :theaterId
-                GROUP BY s.movie_id, m.title, s.price;';
+                GROUP BY s.movie_id, m.title, s.price
+                ORDER BY total_revenue DESC;';
 
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(':theaterId', $theaterId, PDO::PARAM_STR);
@@ -80,7 +81,8 @@ class PostgresSalesReadModel implements SalesReadModel
                     LEFT JOIN flickfacts.theaters t ON t.id = s.theater_id
                     LEFT JOIN flickfacts.movies m ON m.id = s.movie_id
                 WHERE m.id = :movieId
-                GROUP BY t.name, m.title, s.price;';
+                GROUP BY t.name, m.title, s.price
+                ORDER BY total_revenue DESC;';
 
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(':movieId', $movieId, PDO::PARAM_STR);

@@ -23,9 +23,10 @@ class Connection
     public function getConnection(
         string $host,
         string $username,
+        string $password,
         string $database,
         string $port,
-        string $region,
+        string $region = 'us-west-2',
         string $expire = '+14 minutes'): PDO
     {
         $currentTime = new DateTimeImmutable();
@@ -41,14 +42,14 @@ class Connection
 //        }
 
         $dsn = sprintf("pgsql:host=%s;port=%d;dbname=%s",
-            'database-1.cp8m8s2iaja3.us-west-2.rds.amazonaws.com',
+            $host,
             $port,
-            'postgres');
+            $database);
 
         $pdo = new PDO($dsn,
-            'postgres',
+            $username,
             //$this->cachedToken);
-            'mYl4Su030109');
+            $password);
 
         $pdo->setAttribute(PDO::ATTR_ERRMODE,
             PDO::ERRMODE_EXCEPTION);

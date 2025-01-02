@@ -31,7 +31,8 @@ class PostgresTheaterReadModel implements TheaterReadModel
                'Total' AS name,
                SUM(s.price * s.quantity) AS revenue,
                SUM(s.price * s.quantity) AS total_revenue
-        FROM flickfacts.sales s;
+        FROM flickfacts.sales s
+        ORDER BY revenue DESC NULLS LAST;
         ";
 
         $statement = $this->pdo->prepare($sql);

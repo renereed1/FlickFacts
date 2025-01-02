@@ -154,30 +154,30 @@ onMounted(() => {
 
 <template>
   <Layout>
-    <div class="border p-2.5 space-y-5 w-1/2">
+    <div class="flex flex-col p-2.5 space-y-5 w-1/2">
 
       <TheaterForm @theaterCreated="handleTheaterCreated"/>
 
       <h3>Theaters</h3>
       <hr>
 
-      <!-- Show loading spinner while data is being fetched -->
       <LoadingSpinner v-if="loadingTheaters"/>
 
-      <!-- Show the TheaterList component when data is available -->
-      <TheaterList
-          v-else
-          :theaters="theaters"
-          :totalRevenue="totalRevenue"
-          @fetchTheater="fetchTheater"
-      />
+      <div v-else
+           class="flex-grow flex overflow-hidden">
+        <TheaterList
+            :theaters="theaters"
+            :totalRevenue="totalRevenue"
+            @fetchTheater="fetchTheater"/>
+      </div>
 
     </div>
 
     <!-- Spinner while loading -->
     <LoadingSpinner v-if="loadingTheater"/>
 
-    <div v-else-if="showRightSide" class="flex-1 border p-2.5 space-y-5">
+    <div v-else-if="showRightSide"
+         class="flex-grow flex flex-col border p-2.5 space-y-5">
       <h3 class="text-xl">{{ theater.name }}</h3>
       <div class="space-x-10 text-center">
         <a :class="[module === 'sell-ticket' ? 'border p-2.5 rounded-md' : 'p-2.5']" href="#"
@@ -188,33 +188,41 @@ onMounted(() => {
           Tickets</a>
       </div>
 
-      <div v-if="module === 'sell-ticket'">
+      <div v-if="module === 'sell-ticket'" class="flex-grow flex flex-col overflow-hidden">
 
         <SellTicketForm :theater="{id: theater.id, name: theater.name}"
                         :tickets="tickets"
                         @ticketSold="handleTicketsSold"/>
 
 
-        <div class="flex flex-col gap-10 my-5">
+        <div class="flex-grow flex flex-col gap-10 my-2.5 overflow-auto">
 
           <h3>Tickets Sold</h3>
           <LoadingSpinner v-if="loadingTicketsSold"/>
-          <TicketsSold v-else :sales="sales"/>
+
+          <div v-else
+               class="flex-grow flex overflow-hidden">
+            <TicketsSold :sales="sales"/>
+          </div>
 
         </div>
       </div>
 
-      <div v-else-if="module === 'add-ticket'">
+      <div v-else-if="module === 'add-ticket'" class="flex-grow flex flex-col overflow-hidden">
 
         <AddTicketForm :movies="movies"
                        :theater="{id: theater.id, name: theater.name}"
                        @ticketAdded="handleTicketAdded"/>
 
-        <div class="flex flex-col gap-10 my-5">
+        <div class="flex-grow flex flex-col gap-10 my-2.5 overflow-auto">
           <h3>Tickets</h3>
 
           <LoadingSpinner v-if="loadingTickets"/>
-          <TicketList v-else :tickets="tickets"/>
+
+          <div v-else
+               class="flex-grow flex overflow-hidden">
+            <TicketList :tickets="tickets"/>
+          </div>
         </div>
       </div>
     </div>
