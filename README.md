@@ -7,6 +7,62 @@ The system tracks sales data for multiple theaters, allows the addition of new f
 flexible pricing for movies across different theaters. Each movie can be sold at various prices depending on the theater
 location.
 
+## Database Schema
+
+The database schema is designed to handle core business operations around theaters, movies, tickets, and sales. The
+schema is as follows:
+
+### Core Entities:
+
+- **Theaters**: Stores information about each theater.
+- **Movies**: Contains data about the movies, such as title.
+- **Tickets**: Represents ticket containers, where each ticket is tied to a specific movie and theater. It contains
+  information on the number of tickets available for sale and how many tickets have been sold.
+- **Sales**: Records the actual sale transactions of tickets, including quantities sold, date of sale, and related
+  theater/movie.
+
+### Ticket-Sales Relationship:
+
+- **Tickets** act as a container for potential sales, indicating how many tickets are available for a given movie in a
+  specific theater.
+- **Sales** represent the transaction when a ticket is sold, and they track the actual sale data.
+
+To optimize common queries, an additional index is applied to the **Tickets** table, which supports efficient lookups
+based on the `TheaterId`, `MovieId`, and `Available` fields. This ensures fast retrieval of tickets that are available
+for sale and associated with specific theaters and movies.
+
+---
+
+## About the Project
+
+This system provides a comprehensive solution for tracking movie ticket sales across theaters. It’s designed with a
+clean separation of concerns, allowing for scalability, flexibility, and maintainability. Key architectural choices
+include:
+
+- **Frontend**: The frontend provides a minimalistic approach to user interactions and relies on backend validation to
+  ensure data integrity. Frontend validation serves as an optimization, but the enforcement of business rules is a
+  concern handled within the Domain layer on the backend.
+
+- **Backend**: All validation logic is enforced on the backend within the domain layer, ensuring that business rules are
+  consistently applied regardless of the frontend.
+
+- **Data Layer**: The data layer is divided into two main components:
+    - **Repositories**: These operate on **Aggregates** to manage the core entities, ensuring consistency and business
+      logic adherence.
+    - **ReadModels**: Optimized for queries and read-heavy operations, allowing efficient retrieval of data for display
+      and reporting purposes.
+
+- **Single Database**: The system uses a single PostgreSQL database for both transactional data (via Repositories) and
+  read-optimized views (via ReadModels). This setup simplifies deployment and management, though it could be extended to
+  support more complex architectures where repositories and read models are isolated into different databases if needed.
+
+This architecture strikes a balance between consistency (via domain logic in Repositories) and performance (via
+optimized ReadModels), making it suitable for both small-scale and large-scale applications.
+
+## TLDR
+
+---
+
 ## Project Structure
 
 ```plaintext
