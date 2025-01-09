@@ -14,6 +14,13 @@ abstract class AggregateRoot extends Entity
             createdAt: $createdAt);
     }
 
+    /**
+     * Increments the version number of the aggregate root.
+     *
+     * This method is typically used to track changes made to the aggregate.
+     *
+     * @return void
+     */
     protected function incrementVersion(): void
     {
         $this->version++;

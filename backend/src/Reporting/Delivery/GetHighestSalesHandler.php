@@ -6,6 +6,7 @@ use Bref\Context\Context;
 use Bref\Event\Http\HttpHandler;
 use Bref\Event\Http\HttpRequestEvent;
 use Bref\Event\Http\HttpResponse;
+use DateMalformedStringException;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
@@ -20,6 +21,16 @@ class GetHighestSalesHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to get the theater with the highest sales.
+     *
+     * @param HttpRequestEvent $event The incoming HTTP request event.
+     * @param Context $context The Bref context.
+     *
+     * @return HttpResponse The HTTP response containing the sales data or an error message.
+     *
+     * @throws DateMalformedStringException Thrown when the provided date format is invalid.
+     */
     public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
     {
         $when = $event->getQueryParameters()['when'] ??
@@ -37,7 +48,7 @@ class GetHighestSalesHandler extends HttpHandler
             ), ['Content-type' => 'application/json'],
                 400);
         }
-        
+
         $response = $this->salesReadModel->findTheaterWithHighestSalesByDate($date);
 
         return new HttpResponse(json_encode($response),

@@ -28,6 +28,6 @@
     "ext-pdo": "*",
     "ramsey/uuid": "^4.7",
     "php-di/php-di": "^7.0",
-    "ext-http": "*"
+    "monolog/monolog": "^3.8"
   }
 }

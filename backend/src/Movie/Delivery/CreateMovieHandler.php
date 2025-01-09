@@ -18,7 +18,16 @@ class CreateMovieHandler extends HttpHandler
 
     }
 
-    public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
+    /**
+     * Handles the HTTP request to create a new movie.
+     *
+     * @param HttpRequestEvent $event The HTTP request event containing request details.
+     * @param Context $context The AWS Lambda context for the request.
+     *
+     * @return HttpResponse The HTTP response indicating success or failure.
+     */
+    public function handleRequest(HttpRequestEvent $event,
+                                  Context          $context): HttpResponse
     {
         $body = json_decode($event->getBody(), true);
         $title = $body['title'] ?? '';
@@ -36,7 +45,7 @@ class CreateMovieHandler extends HttpHandler
                 400);
         } catch (Exception $e) {
             print 'Exception: ' . $e->getMessage() . "\n";
-            
+
             return new HttpResponse('Internal Server Error',
                 ['Content-type' => 'text/plain'],
                 500);

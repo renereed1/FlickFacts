@@ -12,6 +12,12 @@ class PostgresSalesReadModel implements SalesReadModel
     {
     }
 
+    /**
+     * Retrieves the theater with the highest sales on a specific date.
+     *
+     * @param DateTimeInterface $when The date for which sales data is to be fetched.
+     * @return array|null Associative array with theater details or empty array if no data is found.
+     */
     public function findTheaterWithHighestSalesByDate(DateTimeInterface $when): ?array
     {
         $date = $when->format('Y-m-d');
@@ -45,6 +51,12 @@ class PostgresSalesReadModel implements SalesReadModel
         return $result ?: [];
     }
 
+    /**
+     * Retrieves sales details for movies associated with a specific theater ID.
+     *
+     * @param string $theaterId The ID of the theater.
+     * @return array Associative array of sales data for movies at the specified theater.
+     */
     public function findTheaterMovieSales(string $theaterId): array
     {
         $sql = '
@@ -69,6 +81,12 @@ class PostgresSalesReadModel implements SalesReadModel
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Retrieves sales details for a specific movie across different theaters.
+     *
+     * @param string $movieId The ID of the movie.
+     * @return array Associative array of sales data for the specified movie at various theaters.
+     */
     public function findMovieTheaterSales(string $movieId): array
     {
         $sql = '

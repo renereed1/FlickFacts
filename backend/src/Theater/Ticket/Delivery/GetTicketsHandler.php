@@ -15,13 +15,21 @@ class GetTicketsHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to fetch a list of tickets.
+     *
+     * @param HttpRequestEvent $event The HTTP request event containing request details.
+     * @param Context $context The AWS Lambda context for the request.
+     *
+     * @return HttpResponse The HTTP response containing a list of movies in JSON format.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {
         $pathParameters = $event->getPathParameters();
         $theaterId = $pathParameters['theaterId'] ?? '';
 
-        $response = $this->ticketReadModel->getTickets($theaterId);
+        $response = $this->ticketReadModel->findTickets($theaterId);
 
 
         return new HttpResponse(json_encode($response),

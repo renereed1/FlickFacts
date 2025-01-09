@@ -1,8 +1,10 @@
 <?php
 
 use DI\ContainerBuilder;
+use FlickFacts\Common\MiddleWare\Logger;
 use FlickFacts\Theater\Delivery\CreateTheaterHandler;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheater;
+use Monolog\Logger as MonologLogger;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -13,5 +15,9 @@ $container = $containerBuilder
     ->build();
 
 $createTheater = $container->get(CreateTheater::class);
+$logger = $container->get(MonologLogger::class);
 
-return new CreateTheaterHandler(createTheater: $createTheater);
+return new Logger(
+    new CreateTheaterHandler(createTheater: $createTheater),
+    $logger
+);

@@ -15,6 +15,14 @@ class GetTheaterHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to retrieve theater details.
+     *
+     * @param HttpRequestEvent $event The HTTP request event.
+     * @param Context $context The Bref context.
+     *
+     * @return HttpResponse The HTTP response containing theater details.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {

@@ -1,8 +1,10 @@
 <?php
 
 use DI\ContainerBuilder;
+use FlickFacts\Common\MiddleWare\Logger;
 use FlickFacts\Reporting\Delivery\GetTheaterMovieSalesHandler;
 use FlickFacts\Reporting\ReadModel\SalesReadModel;
+use Monolog\Logger as MonologLogger;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -13,5 +15,9 @@ $container = $containerBuilder
     ->build();
 
 $salesReadModel = $container->get(SalesReadModel::class);
+$logger = $container->get(MonologLogger::class);
 
-return new GetTheaterMovieSalesHandler(salesReadModel: $salesReadModel);
+return new Logger(
+    new GetTheaterMovieSalesHandler(salesReadModel: $salesReadModel),
+    $logger
+);

@@ -15,6 +15,14 @@ class GetMoviesHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to fetch a list of movies.
+     *
+     * @param HttpRequestEvent $event The HTTP request event containing request details.
+     * @param Context $context The AWS Lambda context for the request.
+     *
+     * @return HttpResponse The HTTP response containing a list of movies in JSON format.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {

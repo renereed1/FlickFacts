@@ -12,6 +12,15 @@ class PostgresMovieReadModel implements MovieReadModel
 
     }
 
+    /**
+     * Retrieves a list of movies with their total revenue and sales quantities.
+     *
+     * @return array The list of movies, including:
+     *               - `id`: The movie ID.
+     *               - `title`: The movie title.
+     *               - `quantity`: The total quantity of tickets sold.
+     *               - `total_revenue`: The total revenue generated from sales.
+     */
     public function findMovies(): array
     {
         $sql = '
@@ -33,6 +42,16 @@ class PostgresMovieReadModel implements MovieReadModel
         return $statement->fetchAll();
     }
 
+    /**
+     * Retrieves detailed information about a specific movie by its ID.
+     *
+     * @param string $movieId The ID of the movie to find.
+     *
+     * @return array The movie details, including:
+     *               - `id`: The movie ID.
+     *               - `title`: The movie title.
+     *               - `description`: The movie description.
+     */
     public function findMovie(string $movieId): array
     {
         $sql = 'SELECT id, title, description from flickfacts.movies WHERE id = :movieId';

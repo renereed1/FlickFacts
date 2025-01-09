@@ -14,6 +14,14 @@ readonly class DefaultPricingPolicy implements PricingPolicy
 
     }
 
+    /**
+     * Retrieves the price for a specific movie at a given theater.
+     *
+     * @param string $theaterId The ID of the theater.
+     * @param string $movieId The ID of the movie.
+     *
+     * @return float|null The price of the movie at the specified theater, or null if not found.
+     */
     public function getPrice(string $theaterId,
                              string $movieId): ?float
     {

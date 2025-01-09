@@ -15,6 +15,14 @@ class GetMovieHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to fetch a movie by its ID.
+     *
+     * @param HttpRequestEvent $event The HTTP request event containing request details.
+     * @param Context $context The AWS Lambda context for the request.
+     *
+     * @return HttpResponse The HTTP response containing movie details or an empty object if not found.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {

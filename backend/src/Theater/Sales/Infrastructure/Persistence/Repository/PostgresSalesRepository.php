@@ -2,6 +2,7 @@
 
 namespace FlickFacts\Theater\Sales\Infrastructure\Persistence\Repository;
 
+use Exception;
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
 use FlickFacts\Theater\Sales\Domain\Sales\SalesRepository;
 use PDO;
@@ -13,6 +14,13 @@ readonly class PostgresSalesRepository implements SalesRepository
 
     }
 
+    /**
+     * Persists a sales entity in the PostgreSQL database.
+     *
+     * @param Sales $sales The sales entity to be stored.
+     *
+     * @throws Exception If the query execution fails.
+     */
     public function createSale(Sales $sales): void
     {
         $sql = "INSERT INTO flickfacts.sales (id, theater_id, movie_id, price, quantity, created_at)

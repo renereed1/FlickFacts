@@ -7,9 +7,14 @@ use Ramsey\Uuid\Uuid;
 
 class UuidIdGenerator implements IdGenerator
 {
-
+    /**
+     * Generates a new unique identifier.
+     *
+     * @return string A UUID version 4 string.
+     */
     public function nextId(): string
     {
-        return Uuid::uuid4()->toString();
+        return Uuid::uuid4()
+            ->toString();
     }
 }

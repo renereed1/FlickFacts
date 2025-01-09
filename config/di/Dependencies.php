@@ -30,6 +30,9 @@ use FlickFacts\Theater\Ticket\Infrastructure\Persistence\ReadModel\PostgresTicke
 use FlickFacts\Theater\Ticket\Infrastructure\Persistence\Repository\PostgresTicketRepository;
 use FlickFacts\Theater\Ticket\Interactor\CreateTicket\CreateTicket;
 use FlickFacts\Theater\Ticket\ReadModel\TicketReadModel;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
+use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 
 require_once __DIR__ . '/../EnvLoader.php';
@@ -44,6 +47,16 @@ try {
 return function (ContainerBuilder $container) {
 
     $container->addDefinitions([
+
+        // Monolog Logger
+        Logger::class => function () {
+            $logger = new Logger('application');
+
+            // Add StreamHandler to log to console for CloudWatch
+            $logger->pushHandler(new StreamHandler('php://stdout', Level::Info));
+
+            return $logger;
+        },
 
         Connection::class => function (ContainerInterface $container) {
             $connection = new Connection();

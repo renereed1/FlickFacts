@@ -12,7 +12,20 @@ readonly class PostgresTicketReadModel implements TicketReadModel
 
     }
 
-    public function getTickets(string $theaterId): array
+    /**
+     * Retrieves detailed information about available tickets for a given theater.
+     *
+     * @param string $theaterId The ID of the theater.
+     *
+     * @return array The ticket details, including:
+     *               - `ticket_id`: The ticket ID.
+     *               - `movie_id`: The ID of the movie.
+     *               - `movie_title`: The title of the movie.
+     *               - `price`: The price of the ticket.
+     *               - `total`: The total number of tickets.
+     *               - `available`: The number of available tickets.
+     */
+    public function findTickets(string $theaterId): array
     {
         $sql = 'SELECT t.id AS ticket_id, 
                    t.movie_id, 

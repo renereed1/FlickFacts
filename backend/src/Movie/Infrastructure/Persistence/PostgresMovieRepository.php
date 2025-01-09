@@ -14,6 +14,13 @@ readonly class PostgresMovieRepository implements MovieRepository
 
     }
 
+    /**
+     * Persists a movie entity in the PostgreSQL database.
+     *
+     * @param Movie $movie The movie entity to be stored.
+     *
+     * @throws Exception If the query execution fails.
+     */
     public function createMovie(Movie $movie): void
     {
         $sql = "INSERT INTO flickfacts.movies (id, created_at, title, description) VALUES (:id, :created_at, :title, :description)";

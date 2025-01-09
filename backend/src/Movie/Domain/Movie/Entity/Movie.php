@@ -20,6 +20,11 @@ class Movie extends AggregateRoot
             version: 1);
     }
 
+    /**
+     * Serializes the movie entity into an array format.
+     *
+     * @return array An associative array containing the serialized movie details.
+     */
     public function serialize(): array
     {
         return [

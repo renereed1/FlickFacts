@@ -12,6 +12,11 @@ class PostgresTheaterReadModel implements TheaterReadModel
 
     }
 
+    /**
+     * Retrieves all theaters along with their revenue and total revenue.
+     *
+     * @return array An array of theaters with associated revenue data.
+     */
     public function findTheaters(): array
     {
         $sql = "
@@ -42,6 +47,13 @@ class PostgresTheaterReadModel implements TheaterReadModel
         return $statement->fetchAll();
     }
 
+    /**
+     * Retrieves a specific theater by its ID.
+     *
+     * @param string $theaterId The ID of the theater.
+     *
+     * @return array An associative array containing theater details.
+     */
     public function findTheater(string $theaterId): array
     {
         $sql = 'SELECT id, name FROM flickfacts.theaters WHERE id = :theaterId';

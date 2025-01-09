@@ -18,6 +18,12 @@ class Theater extends AggregateRoot
             version: 1);
     }
 
+    /**
+     * Serializes the Theater entity into an array format.
+     *
+     * @return array An associative array containing the serialized theater data.
+     */
+
     public function serialize(): array
     {
         return [

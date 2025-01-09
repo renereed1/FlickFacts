@@ -15,6 +15,14 @@ class GetTheaterMovieSalesHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to get sales for a specific theater and its movies.
+     *
+     * @param HttpRequestEvent $event The incoming HTTP request event.
+     * @param Context $context The Bref context.
+     *
+     * @return HttpResponse The HTTP response containing the sales data.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {

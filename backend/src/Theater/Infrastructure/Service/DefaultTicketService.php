@@ -2,6 +2,7 @@
 
 namespace FlickFacts\Theater\Infrastructure\Service;
 
+use Exception;
 use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
@@ -14,6 +15,14 @@ readonly class DefaultTicketService implements TicketService
 
     }
 
+    /**
+     * Allocates a specified number of tickets for a given movie at a specific theater.
+     *
+     * @param TheaterId $theaterId The ID of the theater.
+     * @param MovieId $movieId The ID of the movie.
+     * @param int $quantity The number of tickets to allocate.
+     * @throws Exception
+     */
     public function allocateTickets(TheaterId $theaterId,
                                     MovieId   $movieId,
                                     int       $quantity): void
@@ -26,6 +35,14 @@ readonly class DefaultTicketService implements TicketService
         $this->ticketRepository->save($ticket);
     }
 
+    /**
+     * Releases a specified number of tickets for a given movie at a specific theater.
+     *
+     * @param TheaterId $theaterId The ID of the theater.
+     * @param MovieId $movieId The ID of the movie.
+     * @param int $quantity The number of tickets to release.
+     * @throws Exception
+     */
     public function releaseTickets(TheaterId $theaterId,
                                    MovieId   $movieId,
                                    int       $quantity): void

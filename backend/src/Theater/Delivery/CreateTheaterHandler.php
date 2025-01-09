@@ -18,6 +18,14 @@ class CreateTheaterHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to create a theater.
+     *
+     * @param HttpRequestEvent $event The HTTP request event.
+     * @param Context $context The Bref context.
+     *
+     * @return HttpResponse The HTTP response.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {

@@ -18,6 +18,14 @@ class CreateTicketHandler extends HttpHandler
 
     }
 
+    /**
+     * Handles the HTTP request to create a new ticket.
+     *
+     * @param HttpRequestEvent $event The HTTP request event containing request details.
+     * @param Context $context The AWS Lambda context for the request.
+     *
+     * @return HttpResponse The HTTP response indicating success or failure.
+     */
     public function handleRequest(HttpRequestEvent $event,
                                   Context          $context): HttpResponse
     {

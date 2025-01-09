@@ -25,7 +25,7 @@ class GetTicketsHandlerTest extends TestCase
         parent::setUp();
 
         $this->ticketReadModel = M::mock(TicketReadModel::class);
-        $this->ticketReadModel->expects('getTickets')
+        $this->ticketReadModel->expects('findTickets')
             ->andReturn([[
                 'id' => 'TICKET_1'
             ]]);

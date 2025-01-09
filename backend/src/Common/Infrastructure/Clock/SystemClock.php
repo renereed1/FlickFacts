@@ -10,7 +10,14 @@ class SystemClock implements Clock
 {
 
     /**
-     * @throws DateMalformedStringException
+     * Returns the current date and time or a specified point in time.
+     *
+     * @param string $when A string representing a date/time (default is 'now').
+     *                     Can be any valid string format accepted by DateTimeImmutable.
+     *
+     * @return DateTimeImmutable An immutable DateTime object representing the specified time.
+     *
+     * @throws DateMalformedStringException If the provided string is malformed or invalid.
      */
     public function now(string $when = 'now'): DateTimeImmutable
     {

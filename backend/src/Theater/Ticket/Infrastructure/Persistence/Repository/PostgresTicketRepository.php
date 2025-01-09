@@ -2,6 +2,7 @@
 
 namespace FlickFacts\Theater\Ticket\Infrastructure\Persistence\Repository;
 
+use DateMalformedStringException;
 use DateTimeImmutable;
 use Exception;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
@@ -18,6 +19,13 @@ class PostgresTicketRepository implements TicketRepository
 
     }
 
+    /**
+     * Retrieves a ticket by its associated theater ID and movie ID.
+     *
+     * @param Ticket $ticket
+     * @return void The Ticket object if found, or null if no ticket matches.
+     * @throws Exception
+     */
     public function createTicket(Ticket $ticket): void
     {
         $sql = "INSERT INTO flickfacts.tickets (id, created_at, theater_id, movie_id, price, total, available) 
@@ -42,6 +50,13 @@ class PostgresTicketRepository implements TicketRepository
         }
     }
 
+    /**
+     * Updates the availability of an existing Ticket in the repository.
+     *
+     * @param Ticket $ticket The Ticket entity with updated availability.
+     * @return void
+     * @throws Exception
+     */
     public function save(Ticket $ticket): void
     {
         $sql = "UPDATE flickfacts.tickets 
@@ -61,10 +76,17 @@ class PostgresTicketRepository implements TicketRepository
         }
     }
 
+    /**
+     * Retrieves a ticket by its associated theater ID and movie ID.
+     *
+     * @param TheaterId $theaterId The ID of the theater.
+     *
+     * @return Ticket|null The Ticket object if found, or null if no ticket matches.
+     * @throws DateMalformedStringException
+     */
     public function findTicketByTheaterIdAndMovieId(TheaterId $theaterId,
                                                     MovieId   $movieId): ?Ticket
     {
-        // $sql = "SELECT * FROM flickfacts.tickets WHERE theater_id = :theaterId AND movie_id = :movieId LIMIT 1";
         $sql = '
                 SELECT *
                 FROM flickfacts.tickets

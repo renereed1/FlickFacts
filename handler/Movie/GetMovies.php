@@ -1,8 +1,10 @@
 <?php
 
 use DI\ContainerBuilder;
+use FlickFacts\Common\MiddleWare\Logger;
 use FlickFacts\Movie\Delivery\GetMoviesHandler;
 use FlickFacts\Movie\ReadModel\MovieReadModel;
+use Monolog\Logger as MonologLogger;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -14,4 +16,9 @@ $container = $containerBuilder
 
 $movieReadModel = $container->get(MovieReadModel::class);
 
-return new GetMoviesHandler(movieReadModel: $movieReadModel);
+$logger = $container->get(MonologLogger::class);
+
+return new Logger(
+    new GetMoviesHandler(movieReadModel: $movieReadModel),
+    $logger
+);
