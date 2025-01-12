@@ -55,10 +55,10 @@ class SellTicketTest extends TestCase
             'createdAt' => '2016-10-13T03:03:23+00:00',
             'theaterId' => 'THEATER_1',
             'movieId' => 'MOVIE_1',
-            'price' => '12.34',
-            'quantity' => '1',
-            'discount' => '0.00',
-            'finalPrice' => '12.34',
+            'price' => 12.34,
+            'quantity' => 1,
+            'discount' => 0,
+            'finalPrice' => 12.34,
         ]);
 
         $this->salesRepository = M::mock(SalesRepository::class);
@@ -159,10 +159,10 @@ class SellTicketTest extends TestCase
             'createdAt' => '2016-10-13T03:03:23+00:00',
             'theaterId' => 'THEATER_1',
             'movieId' => 'MOVIE_1',
-            'price' => '12.34',
-            'quantity' => '1',
-            'discount' => '10',
-            'finalPrice' => '11.106',
+            'price' => 12.34,
+            'quantity' => 1,
+            'discount' => 10,
+            'finalPrice' => 11.106,
         ]);
 
         $this->salesRepository->expects('createSale')

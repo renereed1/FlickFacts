@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace FlickFacts\Reporting\Delivery;
 
@@ -6,7 +6,6 @@ use Bref\Context\Context;
 use Bref\Event\Http\HttpHandler;
 use Bref\Event\Http\HttpRequestEvent;
 use Bref\Event\Http\HttpResponse;
-use DateMalformedStringException;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
@@ -28,8 +27,6 @@ class GetHighestSalesHandler extends HttpHandler
      * @param Context $context The Bref context.
      *
      * @return HttpResponse The HTTP response containing the sales data or an error message.
-     *
-     * @throws DateMalformedStringException Thrown when the provided date format is invalid.
      */
     public function handleRequest(HttpRequestEvent $event, Context $context): HttpResponse
     {

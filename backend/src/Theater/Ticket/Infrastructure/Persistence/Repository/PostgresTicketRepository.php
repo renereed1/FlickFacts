@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace FlickFacts\Theater\Ticket\Infrastructure\Persistence\Repository;
 
@@ -118,12 +118,14 @@ class PostgresTicketRepository implements TicketRepository
             return null;
         }
 
+        $price = floatval($row['price']);
+
         return new Ticket(
             ticketId: new TicketId($row['id']),
             createdAt: new DateTimeImmutable($row['created_at']),
             theaterId: new TheaterId($row['theater_id']),
             movieId: new MovieId($row['movie_id']),
-            price: new Price($row['price']),
+            price: new Price($price),
             total: (int)$row['total'],
             available: (int)$row['available']
         );
