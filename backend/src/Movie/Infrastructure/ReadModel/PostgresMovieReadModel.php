@@ -28,7 +28,7 @@ class PostgresMovieReadModel implements MovieReadModel
                     m.id,
                     m.title as title,
                     COALESCE(SUM(s.quantity), 0) AS quantity,
-                    COALESCE(SUM(s.price * s.quantity), 0.0) AS total_revenue
+                    COALESCE(SUM(s.final_price * s.quantity), 0.0) AS total_revenue
                 FROM flickfacts.movies m
                     LEFT JOIN flickfacts.sales s on s.movie_id = m.id
                 GROUP BY movie_id, m.title, m.id

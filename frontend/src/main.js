@@ -13,3 +13,5 @@ app.use(router)
 app.use(VueToastify)
 
 app.mount('#app')
+
+console.log("Welcome to Flick Facts Franchise! 🎉");
