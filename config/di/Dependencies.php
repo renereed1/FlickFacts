@@ -13,11 +13,13 @@ use FlickFacts\Movie\Interactor\CreateMovie\CreateMovie;
 use FlickFacts\Movie\ReadModel\MovieReadModel;
 use FlickFacts\Reporting\Infrastructure\Persistence\ReadModel\PostgresSalesReadModel;
 use FlickFacts\Reporting\ReadModel\SalesReadModel;
+use FlickFacts\Theater\Application\Service\DiscountService;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\TheaterRepository;
 use FlickFacts\Theater\Infrastructure\Persistence\ReadModel\PostgresTheaterReadModel;
 use FlickFacts\Theater\Infrastructure\Persistence\Repository\PostgresTheaterRepository;
+use FlickFacts\Theater\Infrastructure\Service\DefaultDiscountService;
 use FlickFacts\Theater\Infrastructure\Service\DefaultPricingPolicy;
 use FlickFacts\Theater\Infrastructure\Service\DefaultTicketService;
 use FlickFacts\Theater\Interactor\CreateTheater\CreateTheater;
@@ -99,6 +101,10 @@ return function (ContainerBuilder $container) {
             return new DefaultPricingPolicy($container->get(TicketRepository::class));
         },
 
+        DiscountService::class => function (ContainerInterface $container) {
+            return new DefaultDiscountService();
+        },
+
         CreateTheater::class => function (ContainerInterface $container) {
             return new CreateTheater(idGenerator: $container->get(IdGenerator::class),
                 clock: $container->get(SystemClock::class),
@@ -123,7 +129,8 @@ return function (ContainerBuilder $container) {
                 clock: $container->get(SystemClock::class),
                 salesRepository: $container->get(SalesRepository::class),
                 ticketService: $container->get(TicketService::class),
-                pricingPolicy: $container->get(PricingPolicy::class));
+                pricingPolicy: $container->get(PricingPolicy::class),
+                discountService: $container->get(DiscountService::class));
         },
 
         SalesReadModel::class => function (ContainerInterface $container) {

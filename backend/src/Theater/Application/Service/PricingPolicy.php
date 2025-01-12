@@ -3,6 +3,8 @@
 namespace FlickFacts\Theater\Application\Service;
 
 
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
+
 interface PricingPolicy
 {
     /**
@@ -11,8 +13,8 @@ interface PricingPolicy
      * @param string $theaterId The ID of the theater.
      * @param string $movieId The ID of the movie.
      *
-     * @return float|null The price of the movie at the theater, or `null` if not available.
+     * @return Price|null The price of the movie at the theater, or `null` if not available.
      */
     public function getPrice(string $theaterId,
-                             string $movieId): ?float;
+                             string $movieId): ?Price;
 }

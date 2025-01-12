@@ -60,18 +60,18 @@ class PostgresSalesReadModel implements SalesReadModel
     public function findTheaterMovieSales(string $theaterId): array
     {
         $sql = '
-                SELECT
-                    s.movie_id as id,
-                    m.title AS movie,
-                    s.price AS price,
-                    SUM(s.quantity) AS tickets_sold,
-                    SUM(s.price * s.quantity) AS total_revenue
-                FROM flickfacts.sales s
-                LEFT JOIN flickfacts.movies m
-                   ON s.movie_id = m.id
-                WHERE s.theater_id = :theaterId
-                GROUP BY s.movie_id, m.title, s.price
-                ORDER BY total_revenue DESC;';
+            SELECT
+                s.movie_id as id,
+                m.title as movie,
+                s.price as price,
+                s.quantity,
+                s.discount,
+                s.final_price
+            FROM flickfacts.sales s
+            LEFT JOIN flickfacts.movies m 
+                on m.id = s.movie_id
+            WHERE s.theater_id = :theaterId
+            ORDER BY s.created_at::date DESC;';
 
         $statement = $this->pdo->prepare($sql);
         $statement->bindParam(':theaterId', $theaterId, PDO::PARAM_STR);

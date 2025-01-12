@@ -27,13 +27,15 @@ class SellTicketHandlerTest extends TestCase
 
         $request = new SellTicketRequest(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1',
-            quantity: 1);
+            quantity: 1,
+            discountCode: '');
 
         $this->sellTicket = m::mock(SellTicket::class);
         $this->sellTicket->expects('execute')
             ->with(M::on(function ($args) use ($request) {
                 return $args == $request;
-            }));
+            }))
+            ->byDefault();
 
         $this->event = new HttpRequestEvent([
             'requestContext' => [
@@ -47,6 +49,7 @@ class SellTicketHandlerTest extends TestCase
             'body' => json_encode([
                 'movieId' => 'MOVIE_1',
                 'quantity' => 1,
+                'discountCode' => ''
             ]),
         ]);
 
@@ -67,6 +70,41 @@ class SellTicketHandlerTest extends TestCase
     #[Test]
     public function CanSellTicket(): void
     {
+        $response = $this->sellTicketHandler->handleRequest(event: $this->event,
+            context: $this->context);
+
+        $this->assertEquals(200, $response->toApiGatewayFormatV2()['statusCode']);
+    }
+
+    #[Test]
+    public function CanSellTicketWithDiscount(): void
+    {
+        $request = new SellTicketRequest(theaterId: 'THEATER_1',
+            movieId: 'MOVIE_1',
+            quantity: 1,
+            discountCode: 'everyone-10');
+
+        $this->sellTicket->expects('execute')
+            ->with(M::on(function ($args) use ($request) {
+                return $args == $request;
+            }));
+
+        $this->event = new HttpRequestEvent([
+            'requestContext' => [
+                'http' => [
+                    'method' => 'POST',
+                ]
+            ],
+            "pathParameters" => [
+                "theaterId" => "THEATER_1"
+            ],
+            'body' => json_encode([
+                'movieId' => 'MOVIE_1',
+                'quantity' => 1,
+                'discountCode' => 'everyone-10'
+            ]),
+        ]);
+
         $response = $this->sellTicketHandler->handleRequest(event: $this->event,
             context: $this->context);
 

@@ -5,12 +5,14 @@ namespace FlickFacts\Theater\Sales\Interactor\SellTicket;
 use Exception;
 use FlickFacts\Common\ApplicationService\Clock\Clock;
 use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
+use FlickFacts\Theater\Application\Service\DiscountService;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
 use FlickFacts\Theater\Sales\Domain\Sales\SalesRepository;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
 
 class SellTicket
@@ -19,7 +21,8 @@ class SellTicket
                                 private readonly Clock           $clock,
                                 private readonly SalesRepository $salesRepository,
                                 private readonly TicketService   $ticketService,
-                                private readonly PricingPolicy   $pricingPolicy,)
+                                private readonly PricingPolicy   $pricingPolicy,
+                                private readonly DiscountService $discountService)
     {
 
     }
@@ -38,9 +41,10 @@ class SellTicket
         $sale = $this->sellTicket(theaterId: $request->theaterId,
             movieId: $request->movieId,
             price: $price,
-            quantity: $request->quantity);
+            quantity: $request->quantity,
+            discountCode: $request->discountCode);
 
-        // Additional logic can be implemented based on the sale aggregate
+        // Additional logic can be implemented based on the sales aggregate
     }
 
     /**
@@ -48,15 +52,17 @@ class SellTicket
      *
      * @param string $theaterId The ID of the theater.
      * @param string $movieId The ID of the movie.
-     * @param float $price The price of the tickets.
+     * @param Price $price The price of the tickets.
      * @param int $quantity The number of tickets to sell.
+     * @param string $discountCode
      * @return Sales The created Sales entity.
      * @throws Exception If ticket allocation or sale creation fails.
      */
     private function sellTicket(string $theaterId,
                                 string $movieId,
-                                float  $price,
-                                int    $quantity): Sales
+                                Price  $price,
+                                int    $quantity,
+                                string $discountCode): Sales
     {
         $id = $this->idGenerator->nextId();
         $createdAt = $this->clock->now();
@@ -65,12 +71,15 @@ class SellTicket
             movieId: new MovieId(id: $movieId),
             quantity: $quantity);
 
-        $sale = new Sales(salesId: new SalesId($id),
+        $discount = $this->discountService->getDiscount($discountCode);
+
+        $sale = Sales::create(saleId: new SalesId($id),
             createdAt: $createdAt,
             theaterId: new TheaterId(id: $theaterId),
             movieId: new MovieId(id: $movieId),
             price: $price,
-            quantity: $quantity);
+            quantity: $quantity,
+            discount: $discount);
 
         $this->createSale($sale);
 

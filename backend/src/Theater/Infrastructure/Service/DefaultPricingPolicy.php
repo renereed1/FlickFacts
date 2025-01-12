@@ -5,6 +5,7 @@ namespace FlickFacts\Theater\Infrastructure\Service;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 
 readonly class DefaultPricingPolicy implements PricingPolicy
@@ -20,10 +21,10 @@ readonly class DefaultPricingPolicy implements PricingPolicy
      * @param string $theaterId The ID of the theater.
      * @param string $movieId The ID of the movie.
      *
-     * @return float|null The price of the movie at the specified theater, or null if not found.
+     * @return Price|null The price of the movie at the specified theater, or null if not found.
      */
     public function getPrice(string $theaterId,
-                             string $movieId): ?float
+                             string $movieId): ?Price
     {
         $ticket = $this->ticketRepository->findTicketByTheaterIdAndMovieId(theaterId: new TheaterId(id: $theaterId),
             movieId: new MovieId(id: $movieId));

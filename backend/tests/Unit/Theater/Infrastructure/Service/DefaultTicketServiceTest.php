@@ -8,6 +8,7 @@ use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Infrastructure\Service\DefaultTicketService;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
@@ -31,7 +32,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 20);
 
@@ -66,7 +67,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 19);
 
@@ -89,7 +90,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 19);
 
@@ -108,7 +109,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 20);
 
@@ -135,7 +136,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 0);
 
@@ -168,7 +169,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 20);
 
@@ -201,7 +202,7 @@ class DefaultTicketServiceTest extends TestCase
             createdAt: new DateTimeImmutable('2000-07-25T10:03:23+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 0);
 

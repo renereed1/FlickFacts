@@ -6,10 +6,11 @@ const props = defineProps({
 
 <template>
   <div class="flex-grow flex flex-col">
-    <div class="grid grid-cols-4">
+    <div class="grid grid-cols-5">
       <div class="p-2.5 font-bold">Movie</div>
       <div class="p-2.5 text-center font-bold">Price</div>
-      <div class="p-2.5 text-center font-bold">Sold</div>
+      <div class="p-2.5 text-center font-bold">Quantity</div>
+      <div class="p-2.5 text-center font-bold">Discount</div>
       <div class="p-2.5 text-center font-bold">Total</div>
     </div>
 
@@ -18,7 +19,7 @@ const props = defineProps({
       <!-- Grid container for the body -->
       <div class="flex-grow">
         <!-- Loop over the tickets -->
-        <div v-for="sale in sales" :key="sale.id" class="grid grid-cols-4 row">
+        <div v-for="sale in sales" :key="sale.id" class="grid grid-cols-5 row">
           <div class="text-left">
             {{ sale.movie }}
           </div>
@@ -26,10 +27,13 @@ const props = defineProps({
             ${{ sale.price ? parseFloat(sale.price).toFixed(2) : '0.00' }}
           </div>
           <div class="text-center">
-            {{ sale.tickets_sold ? parseInt(sale.tickets_sold) : '0' }}
+            {{ sale.quantity ? parseInt(sale.quantity) : '0' }}
           </div>
           <div class="text-center">
-            ${{ sale.total_revenue ? parseFloat(sale.total_revenue).toFixed(2) : '0' }}
+            {{ sale.discount ? parseInt(sale.discount) + '%' : '-' }}
+          </div>
+          <div class="text-center">
+            ${{ sale.final_price ? parseFloat(sale.final_price).toFixed(2) : '0' }}
           </div>
         </div>
       </div>

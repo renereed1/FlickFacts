@@ -197,7 +197,7 @@ onMounted(() => {
 
         <div class="flex-grow flex flex-col gap-10 my-2.5 overflow-auto">
 
-          <h3>Tickets Sold</h3>
+          <h3 class="mt-10 font-bold">Tickets Sold</h3>
           <LoadingSpinner v-if="loadingTicketsSold"/>
 
           <div v-else
@@ -215,7 +215,8 @@ onMounted(() => {
                        @ticketAdded="handleTicketAdded"/>
 
         <div class="flex-grow flex flex-col gap-10 my-2.5 overflow-auto">
-          <h3>Tickets</h3>
+
+          <h3 class="mt-10 font-bold">Tickets</h3>
 
           <LoadingSpinner v-if="loadingTickets"/>
 

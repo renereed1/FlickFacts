@@ -111,7 +111,7 @@ onMounted(() => {
 
       <div class="flex-grow flex flex-col gap-2.5 overflow-auto">
 
-        <h3>Tickets Sold</h3>
+        <h3 class="mt-10 font-bold">Tickets Sold</h3>
 
         <LoadingSpinner v-if="loadingTheaterSales"/>
 

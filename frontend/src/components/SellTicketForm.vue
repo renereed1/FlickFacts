@@ -7,7 +7,8 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
 const newSale = ref({
   movieId: '',
-  quantity: ''
+  quantity: '',
+  discountCode: '',
 });
 
 const emit = defineEmits(['ticketSold']);
@@ -79,6 +80,14 @@ const handleSubmit = () => {
         <input id="quantity" v-model="newSale.quantity" class="border p-2.5 w-full rounded-md" name="quantity"
                placeholder="Quantity"
                type="number">
+      </div>
+
+      <div>
+        <select id="discountCode" v-model="newSale.discountCode" class="border p-2.5 w-full rounded-md"
+                name="discountCode">
+          <option value="">No Discount</option>
+          <option value="everyone-10">Everyone (10% Discount)</option>
+        </select>
       </div>
 
       <div>

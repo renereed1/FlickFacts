@@ -36,10 +36,12 @@ class SellTicketHandler extends HttpHandler
         $body = json_decode($event->getBody(), true);
         $movieId = $body['movieId'] ?? '';
         $quantity = (int)$body['quantity'] ?? 0;
+        $discountCode = $body['discountCode'] ?? '';
 
         $request = new SellTicketRequest(theaterId: $theaterId,
             movieId: $movieId,
-            quantity: $quantity);
+            quantity: $quantity,
+            discountCode: $discountCode);
 
         try {
             $this->sellTicket->execute($request);

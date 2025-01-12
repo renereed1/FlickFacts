@@ -7,6 +7,7 @@ use FlickFacts\Common\ApplicationService\Clock\Clock;
 use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
@@ -49,7 +50,7 @@ class CreateTicketTest extends TestCase
             createdAt: new DateTimeImmutable('2001-12-15T03:13:32+00:00'),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 12.34,
+            price: new Price(price: 12.34),
             total: 20,
             available: 20);
 

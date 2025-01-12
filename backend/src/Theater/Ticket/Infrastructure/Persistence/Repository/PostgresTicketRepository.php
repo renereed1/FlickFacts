@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Exception;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
@@ -34,6 +35,8 @@ class PostgresTicketRepository implements TicketRepository
         $statement = $this->pdo->prepare($sql);
 
         $data = $ticket->serialize();
+
+        print_r($data);
 
         try {
             $statement->execute([
@@ -120,7 +123,7 @@ class PostgresTicketRepository implements TicketRepository
             createdAt: new DateTimeImmutable($row['created_at']),
             theaterId: new TheaterId($row['theater_id']),
             movieId: new MovieId($row['movie_id']),
-            price: (float)$row['price'],
+            price: new Price($row['price']),
             total: (int)$row['total'],
             available: (int)$row['available']
         );

@@ -23,11 +23,13 @@ readonly class PostgresSalesRepository implements SalesRepository
      */
     public function createSale(Sales $sales): void
     {
-        $sql = "INSERT INTO flickfacts.sales (id, theater_id, movie_id, price, quantity, created_at)
-            VALUES (:id, :theater_id, :movie_id, :price, :quantity, :created_at)";
+        $sql = "INSERT INTO flickfacts.sales (id, theater_id, movie_id, price, quantity, created_at, discount, final_price)
+            VALUES (:id, :theater_id, :movie_id, :price, :quantity, :created_at, :discount, :final_price)";
         $statement = $this->pdo->prepare($sql);
 
         $data = $sales->serialize();
+
+        print_r($data);
 
         $statement->execute([
             ':id' => $data['id'],
@@ -36,6 +38,8 @@ readonly class PostgresSalesRepository implements SalesRepository
             ':price' => $data['price'],
             ':quantity' => $data['quantity'],
             ':created_at' => $data['createdAt'],
+            ':discount' => $data['discount'],
+            ':final_price' => $data['finalPrice'],
         ]);
     }
 }

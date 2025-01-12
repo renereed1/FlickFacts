@@ -7,6 +7,7 @@ use Exception;
 use FlickFacts\Common\Domain\Entity\AggregateRoot;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
 use RuntimeException;
 
@@ -16,7 +17,7 @@ class Ticket extends AggregateRoot
                                 DateTimeImmutable        $createdAt,
                                 private TheaterId        $theaterId,
                                 private MovieId          $movieId,
-                                private float            $price,
+                                private Price            $price,
                                 private int              $total,
                                 private int              $available)
     {
@@ -28,9 +29,9 @@ class Ticket extends AggregateRoot
     /**
      * Retrieves the price of the ticket.
      *
-     * @return float The ticket price.
+     * @return Price The ticket price.
      */
-    public function price(): float
+    public function price(): Price
     {
         return $this->price;
     }
@@ -82,7 +83,7 @@ class Ticket extends AggregateRoot
             'id' => $this->ticketId->id,
             'theaterId' => $this->theaterId->id,
             'movieId' => $this->movieId->id,
-            'price' => $this->price,
+            'price' => $this->price->price,
             'total' => $this->total,
             'available' => $this->available,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),

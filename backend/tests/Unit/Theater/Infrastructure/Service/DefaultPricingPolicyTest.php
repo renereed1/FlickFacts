@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Infrastructure\Service\DefaultPricingPolicy;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Ticket\Domain\Ticket\Entity\Ticket;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
@@ -27,7 +28,7 @@ class DefaultPricingPolicyTest extends TestCase
             createdAt: new DateTimeImmutable(),
             theaterId: new TheaterId(id: 'THEATER_1'),
             movieId: new MovieId(id: 'MOVIE_1'),
-            price: 14.42,
+            price: new Price(price: 14.42),
             total: 20,
             available: 20);
 
@@ -59,7 +60,7 @@ class DefaultPricingPolicyTest extends TestCase
         $price = $this->pricingPolicy->getPrice(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1');
 
-        $this->assertEquals(14.42, $price);
+        $this->assertEquals(14.42, $price->price);
     }
 
     #[Test]

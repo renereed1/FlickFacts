@@ -6,13 +6,15 @@ use DateTimeImmutable;
 use Exception;
 use FlickFacts\Common\ApplicationService\Clock\Clock;
 use FlickFacts\Common\ApplicationService\IdGenerator\IdGenerator;
+use FlickFacts\Theater\Application\Service\DiscountService;
 use FlickFacts\Theater\Application\Service\PricingPolicy;
 use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
 use FlickFacts\Theater\Sales\Domain\Sales\SalesRepository;
-use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Discount;
+use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Sales\Interactor\SellTicket\SellTicket;
 use FlickFacts\Theater\Sales\Interactor\SellTicket\SellTicketRequest;
 use Mockery as M;
@@ -34,6 +36,8 @@ class SellTicketTest extends TestCase
 
     private SalesRepository $salesRepository;
 
+    private DiscountService $discountService;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -46,12 +50,16 @@ class SellTicketTest extends TestCase
         $this->clock->expects('now')
             ->andReturn(new DateTimeImmutable('2016-10-13T03:03:23+00:00'));
 
-        $sales = new Sales(salesId: new SalesId('SALES_1'),
-            createdAt: new DateTimeImmutable('2016-10-13T03:03:23+00:00'),
-            theaterId: new TheaterId('THEATER_1'),
-            movieId: new MovieId('MOVIE_1'),
-            price: 12.34,
-            quantity: 1);
+        $sales = Sales::hydrate([
+            'id' => 'SALES_1',
+            'createdAt' => '2016-10-13T03:03:23+00:00',
+            'theaterId' => 'THEATER_1',
+            'movieId' => 'MOVIE_1',
+            'price' => '12.34',
+            'quantity' => '1',
+            'discount' => '0.00',
+            'finalPrice' => '12.34',
+        ]);
 
         $this->salesRepository = M::mock(SalesRepository::class);
         $this->salesRepository->expects('createSale')
@@ -76,13 +84,20 @@ class SellTicketTest extends TestCase
         $this->pricingPolicy = M::mock(PricingPolicy::class);
         $this->pricingPolicy->expects('getPrice')
             ->with('THEATER_1', 'MOVIE_1')
-            ->andReturn(12.34);
+            ->andReturn(new Price(12.34));
+
+        $this->discountService = M::mock(DiscountService::class);
+        $this->discountService->expects('getDiscount')
+            ->with('')
+            ->andReturn(new Discount())
+            ->byDefault();
 
         $this->sellTicket = new SellTicket(idGenerator: $this->idGenerator,
             clock: $this->clock,
             salesRepository: $this->salesRepository,
             ticketService: $this->ticketService,
-            pricingPolicy: $this->pricingPolicy);
+            pricingPolicy: $this->pricingPolicy,
+            discountService: $this->discountService);
     }
 
     public function tearDown(): void
@@ -97,7 +112,8 @@ class SellTicketTest extends TestCase
     {
         $request = new SellTicketRequest(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1',
-            quantity: 1);
+            quantity: 1,
+            discountCode: '');
 
         $this->sellTicket->execute($request);
     }
@@ -124,7 +140,40 @@ class SellTicketTest extends TestCase
 
         $request = new SellTicketRequest(theaterId: 'THEATER_1',
             movieId: 'MOVIE_1',
-            quantity: 1);
+            quantity: 1,
+            discountCode: '');
+
+        $this->sellTicket->execute($request);
+    }
+
+    #[Test]
+    #[DoesNotPerformAssertions]
+    public function CanSellTicketWithDiscount(): void
+    {
+        $this->discountService->expects('getDiscount')
+            ->with('everyone-10')
+            ->andReturn(new Discount(10));
+
+        $sales = Sales::hydrate([
+            'id' => 'SALES_1',
+            'createdAt' => '2016-10-13T03:03:23+00:00',
+            'theaterId' => 'THEATER_1',
+            'movieId' => 'MOVIE_1',
+            'price' => '12.34',
+            'quantity' => '1',
+            'discount' => '10',
+            'finalPrice' => '11.106',
+        ]);
+
+        $this->salesRepository->expects('createSale')
+            ->with(M::on(function ($args) use ($sales) {
+                return $args == $sales;
+            }));
+
+        $request = new SellTicketRequest(theaterId: 'THEATER_1',
+            movieId: 'MOVIE_1',
+            quantity: 1,
+            discountCode: 'everyone-10');
 
         $this->sellTicket->execute($request);
     }
