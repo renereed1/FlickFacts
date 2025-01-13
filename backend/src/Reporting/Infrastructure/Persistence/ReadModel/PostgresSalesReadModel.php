@@ -94,7 +94,7 @@ class PostgresSalesReadModel implements SalesReadModel
                        m.title as movie,
                        s.price AS price,
                        SUM(s.quantity) AS tickets_sold,
-                       SUM(s.final_price * s.quantity) AS total_revenue
+                       SUM(s.price * s.quantity) AS total_revenue
                 FROM flickfacts.sales s
                     LEFT JOIN flickfacts.theaters t ON t.id = s.theater_id
                     LEFT JOIN flickfacts.movies m ON m.id = s.movie_id
