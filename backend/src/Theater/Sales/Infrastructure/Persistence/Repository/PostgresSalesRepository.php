@@ -29,8 +29,6 @@ readonly class PostgresSalesRepository implements SalesRepository
 
         $data = $sales->serialize();
 
-        print_r($data);
-
         $statement->execute([
             ':id' => $data['id'],
             ':theater_id' => $data['theaterId'],

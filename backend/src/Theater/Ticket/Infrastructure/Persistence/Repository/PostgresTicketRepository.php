@@ -36,8 +36,6 @@ class PostgresTicketRepository implements TicketRepository
 
         $data = $ticket->serialize();
 
-        print_r($data);
-
         try {
             $statement->execute([
                 'id' => $data['id'],

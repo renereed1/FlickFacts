@@ -14,6 +14,7 @@ use FlickFacts\Theater\Sales\Domain\Sales\Entity\Sales;
 use FlickFacts\Theater\Sales\Domain\Sales\SalesRepository;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
+use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\Quantity;
 
 class SellTicket
 {
@@ -41,7 +42,7 @@ class SellTicket
         $sale = $this->sellTicket(theaterId: $request->theaterId,
             movieId: $request->movieId,
             price: $price,
-            quantity: $request->quantity,
+            quantity: new Quantity($request->quantity),
             discountCode: $request->discountCode);
 
         // Additional logic can be implemented based on the sales aggregate
@@ -58,11 +59,11 @@ class SellTicket
      * @return Sales The created Sales entity.
      * @throws Exception If ticket allocation or sale creation fails.
      */
-    private function sellTicket(string $theaterId,
-                                string $movieId,
-                                Price  $price,
-                                int    $quantity,
-                                string $discountCode): Sales
+    private function sellTicket(string   $theaterId,
+                                string   $movieId,
+                                Price    $price,
+                                Quantity $quantity,
+                                string   $discountCode): Sales
     {
         $id = $this->idGenerator->nextId();
         $createdAt = $this->clock->now();

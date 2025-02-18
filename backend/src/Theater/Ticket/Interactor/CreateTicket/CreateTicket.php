@@ -31,6 +31,12 @@ class CreateTicket
      */
     public function execute(CreateTicketRequest $request): void
     {
+        if (empty($request->movieId) ||
+            empty($request->theaterId) ||
+            $request->price === 0.0 ||
+            $request->total === 0)
+            throw new RuntimeException('Price, and Total Available are required');
+
         if ($this->ticketReadModel->isTicketAvailable(theaterId: $request->theaterId,
             movieId: $request->movieId)) {
 

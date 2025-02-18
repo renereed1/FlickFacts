@@ -8,6 +8,7 @@ use FlickFacts\Common\Domain\Entity\AggregateRoot;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
+use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\Quantity;
 use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\TicketId;
 use RuntimeException;
 
@@ -39,37 +40,33 @@ class Ticket extends AggregateRoot
     /**
      * Allocates a specified number of tickets.
      *
-     * @param int $quantity The number of tickets to allocate.
+     * @param Quantity $quantity The number of tickets to allocate.
      *
      * @throws RuntimeException If there are not enough tickets available to allocate.
      */
-    public function allocateTickets(int $quantity): void
+    public function allocateTickets(Quantity $quantity): void
     {
-        if ($quantity < 1) {
-            throw new RuntimeException('Quantity must be positive and greater then 0.');
-        }
-
-        if ($this->available < $quantity) {
+        if ($this->available < $quantity->quantity) {
             throw new RuntimeException('Insufficient tickets available to allocate.');
         }
 
-        $this->available -= $quantity;
+        $this->available -= $quantity->quantity;
     }
 
     /**
      * Releases a specified number of tickets back to availability.
      *
-     * @param int $quantity The number of tickets to release.
+     * @param Quantity $quantity The number of tickets to release.
      *
      * @throws Exception If releasing the tickets exceeds the total ticket capacity.
      */
-    public function releaseTickets(int $quantity): void
+    public function releaseTickets(Quantity $quantity): void
     {
-        if ($this->available + $quantity > $this->total) {
+        if ($this->available + $quantity->quantity > $this->total) {
             throw new RuntimeException('Cannot release tickets: exceeds total ticket capacity.');
         }
 
-        $this->available += $quantity;
+        $this->available += $quantity->quantity;
     }
 
     /**

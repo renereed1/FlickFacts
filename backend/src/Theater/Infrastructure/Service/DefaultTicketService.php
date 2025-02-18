@@ -7,6 +7,7 @@ use FlickFacts\Theater\Application\Service\TicketService;
 use FlickFacts\Theater\Domain\Theater\ValueObject\MovieId;
 use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Ticket\Domain\Ticket\TicketRepository;
+use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\Quantity;
 
 readonly class DefaultTicketService implements TicketService
 {
@@ -20,12 +21,12 @@ readonly class DefaultTicketService implements TicketService
      *
      * @param TheaterId $theaterId The ID of the theater.
      * @param MovieId $movieId The ID of the movie.
-     * @param int $quantity The number of tickets to allocate.
+     * @param Quantity $quantity The number of tickets to allocate.
      * @throws Exception
      */
     public function allocateTickets(TheaterId $theaterId,
                                     MovieId   $movieId,
-                                    int       $quantity): void
+                                    Quantity  $quantity): void
     {
         $ticket = $this->ticketRepository->findTicketByTheaterIdAndMovieId(theaterId: $theaterId,
             movieId: $movieId);
@@ -40,12 +41,12 @@ readonly class DefaultTicketService implements TicketService
      *
      * @param TheaterId $theaterId The ID of the theater.
      * @param MovieId $movieId The ID of the movie.
-     * @param int $quantity The number of tickets to release.
+     * @param Quantity $quantity The number of tickets to release.
      * @throws Exception
      */
     public function releaseTickets(TheaterId $theaterId,
                                    MovieId   $movieId,
-                                   int       $quantity): void
+                                   Quantity  $quantity): void
     {
         $ticket = $this->ticketRepository->findTicketByTheaterIdAndMovieId(theaterId: $theaterId,
             movieId: $movieId);

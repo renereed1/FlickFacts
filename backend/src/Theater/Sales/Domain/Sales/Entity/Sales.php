@@ -12,6 +12,7 @@ use FlickFacts\Theater\Domain\Theater\ValueObject\TheaterId;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Discount;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\Price;
 use FlickFacts\Theater\Sales\Domain\Sales\ValueObject\SalesId;
+use FlickFacts\Theater\Ticket\Domain\Ticket\ValueObject\Quantity;
 
 class Sales extends AggregateRoot
 {
@@ -20,7 +21,7 @@ class Sales extends AggregateRoot
                                    public readonly TheaterId $theaterId,
                                    public readonly MovieId   $movieId,
                                    private readonly Price    $price,
-                                   public readonly int       $quantity,
+                                   public readonly Quantity  $quantity,
                                    public readonly Discount  $discount,
                                    private float             $finalPrice)
     {
@@ -37,7 +38,7 @@ class Sales extends AggregateRoot
      * @param TheaterId $theaterId The identifier for the theater where the sale occurred.
      * @param MovieId $movieId The identifier for the movie associated with the sale.
      * @param Price $price The price per unit of the ticket.
-     * @param int $quantity The number of tickets sold.
+     * @param Quantity $quantity The number of tickets sold.
      * @param Discount $discount An optional discount applied to the sale.
      * @return self A new instance of the Sales entity with the final price calculated.
      */
@@ -46,7 +47,7 @@ class Sales extends AggregateRoot
                                   TheaterId         $theaterId,
                                   MovieId           $movieId,
                                   Price             $price,
-                                  int               $quantity,
+                                  Quantity          $quantity,
                                   Discount          $discount): self
     {
         $sale = new self(salesId: $saleId,
@@ -70,7 +71,7 @@ class Sales extends AggregateRoot
      */
     private function calculateFinalPrice(): void
     {
-        $totalPrice = $this->price->price * $this->quantity;
+        $totalPrice = $this->price->price * $this->quantity->quantity;
         $discountPrice = $totalPrice * $this->discount->percent;
         $this->finalPrice = $totalPrice - $discountPrice;
     }
@@ -101,7 +102,7 @@ class Sales extends AggregateRoot
             theaterId: new TheaterId($data['theaterId']),
             movieId: new MovieId($data['movieId']),
             price: new Price($data['price']),
-            quantity: $data['quantity'],
+            quantity: new Quantity($data['quantity']),
             discount: new Discount($data['discount']),
             finalPrice: $data['finalPrice']);
     }

@@ -35,7 +35,7 @@ class CreateTicketHandler extends HttpHandler
         $body = json_decode($event->getBody(), true);
         $movieId = $body['movieId'] ?? '';
         $price = (float)$body['price'] ?? 0.0;
-        $total = (int)$body['total'] ?? '';
+        $total = (int)$body['total'] ?? 0;
 
         $request = new CreateTicketRequest(theaterId: $theaterId,
             movieId: $movieId,

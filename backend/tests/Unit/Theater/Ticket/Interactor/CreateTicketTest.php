@@ -114,4 +114,29 @@ class CreateTicketTest extends TestCase
 
         $this->createTicket->execute($request);
     }
+
+    #[Test]
+    public function ThrowExceptionIfRequestDataIsMissing(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->ticketReadModel->expects('isTicketAvailable')
+            ->never();
+
+        $this->idGenerator->expects('nextId')
+            ->never();
+
+        $this->clock->expects('now')
+            ->never();
+
+        $this->ticketRepository->expects('createTicket')
+            ->never();
+
+        $request = new CreateTicketRequest(theaterId: 'THEATER_1',
+            movieId: '',
+            price: 0,
+            total: 0);
+
+        $this->createTicket->execute($request);
+    }
 }
