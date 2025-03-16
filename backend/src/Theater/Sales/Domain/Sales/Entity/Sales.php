@@ -119,7 +119,7 @@ class Sales extends AggregateRoot
             'theaterId' => $this->theaterId->id,
             'movieId' => $this->movieId->id,
             'price' => $this->price->price,
-            'quantity' => $this->quantity,
+            'quantity' => $this->quantity->quantity,
             'createdAt' => $this->createdAt->format(DateTimeInterface::ATOM),
             'discount' => $this->discount->discount,
             'finalPrice' => $this->finalPrice,
